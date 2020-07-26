@@ -86,7 +86,7 @@ const uploadChecklistItems = data => {
 const editUser = (userId, data) => {
   return dispatch => {
     return api()
-      .post('users/' + userId, data)
+      .put('users/' + userId, data)
       .then(res => {
         // dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
