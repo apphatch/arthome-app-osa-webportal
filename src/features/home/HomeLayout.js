@@ -4,7 +4,7 @@ import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
+  DashboardOutlined,
   UploadOutlined,
   LogoutOutlined,
   ImportOutlined,
@@ -32,14 +32,14 @@ const HomeLayout = ({ children, dispatch }) => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />} onClick={() => history.push('/')}>
+          <Menu.Item key="1" icon={<DashboardOutlined />} onClick={() => history.push('/')}>
             Dashboard
           </Menu.Item>
-          <Menu.Item key="2" icon={<UploadOutlined />} onClick={() => history.push('/upload')}>
-            Upload
-          </Menu.Item>
-          <Menu.Item key="3" icon={<ImportOutlined />} onClick={() => history.push('/cico')}>
+          <Menu.Item key="2" icon={<ImportOutlined />} onClick={() => history.push('/cico')}>
             Checkin/Checkout
+          </Menu.Item>
+          <Menu.Item key="3" icon={<UploadOutlined />} onClick={() => history.push('/upload')}>
+            Upload
           </Menu.Item>
           <Menu.Item key="4" icon={<DownloadOutlined />} onClick={() => history.push('/download')}>
             Download

@@ -65,7 +65,7 @@ const UploadLayout = ({ dispatch }) => {
   return (
     <Row>
       <Col span={24}>
-        <Card>
+        <Card title="Upload" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={4}>
               <p>Upload stock</p>
