@@ -14,8 +14,8 @@ const api = () => {
       headers = JSON.parse(root.auth).headers;
     }
   }
-
-  console.log(headers);
+  
+  headers.App = 'osa-webportal';
 
   const api = axios.create({
     baseURL: apiUrl,

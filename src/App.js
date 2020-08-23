@@ -66,5 +66,5 @@ function renderRouteConfigV3(routes, contextPath) {
 export default function App() {
   const children = renderRouteConfigV3(routeConfig, '/');
 
-  return <>{ children }</>;
+  return <>{children}</>;
 }

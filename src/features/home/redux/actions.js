@@ -22,8 +22,8 @@ const getListUsers = () => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
-          // dispatch(authActions.logout());
+        if (status === 401 || status === 500) {
+          dispatch(authActions.logout());
         }
       });
   };
@@ -40,7 +40,7 @@ const uploadStocks = data => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -58,7 +58,7 @@ const uploadChecklists = data => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -76,7 +76,7 @@ const uploadChecklistItems = data => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -94,7 +94,7 @@ const editUser = (userId, data) => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -112,7 +112,7 @@ const lockUser = userId => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -130,7 +130,7 @@ const unlockUser = userId => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -148,7 +148,7 @@ const uploadUsers = data => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });
@@ -166,7 +166,7 @@ const getCheckInCheckOut = () => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
       });

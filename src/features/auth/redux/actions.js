@@ -15,6 +15,7 @@ const login = data => {
     return api()
       .post('login', data)
       .then(res => {
+        console.log(res);
         const data = {
           user: res.data,
           headers: {
@@ -49,7 +50,7 @@ const logout = () => {
       })
       .catch(error => {
         const { status } = error.response;
-        if (status === 401) {
+        if (status === 401 || status === 500) {
           localStorage.removeItem('persist:root');
           history.go('/auth/login');
         }
