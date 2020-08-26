@@ -160,6 +160,10 @@ const getCheckInCheckOut = () => {
     return api()
       .get('checkin_checkouts')
       .then(res => {
+        res.data = res.data.map(data => {
+          data.key = data.id;
+          return data;
+        });
         dispatch(success(GET_LIST_CHECKIN_CHECKOUT_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);

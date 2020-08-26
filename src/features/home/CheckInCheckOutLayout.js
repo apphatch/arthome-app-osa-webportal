@@ -1,10 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 
-import { Row, Col, Card, Table, Tag, Typography, Input } from 'antd';
+import { Row, Col, Card, Table, Tag, Typography, Input, Image } from 'antd';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';
+const url = process.env.REACT_APP_API_URL;
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -24,7 +25,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
     <Row>
       <Col span={24}>
         <Card title="Check In / Check Out" bordered={false} style={{ width: '100%' }}>
-          <Row>
+          <Row gutter={[0, 20]}>
             <Col span={24}>
               <Search placeholder="Search..." onSearch={onSearch} enterButton />
             </Col>
@@ -39,9 +40,9 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     key: 'id',
                   },
                   {
-                    title: 'User Id',
-                    dataIndex: 'user_id',
-                    key: 'user_id',
+                    title: 'User',
+                    dataIndex: 'user',
+                    key: 'user',
                   },
                   {
                     title: 'Status',
@@ -53,6 +54,14 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       } else {
                         return <Tag color="red">not checked</Tag>;
                       }
+                    },
+                  },
+                  {
+                    title: 'Photos',
+                    dataIndex: 'photos',
+                    key: 'photos',
+                    render: item => {
+                      return <Image src={`${url}${item[0].image}`} />;
                     },
                   },
                   {
