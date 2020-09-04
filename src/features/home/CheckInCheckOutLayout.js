@@ -13,6 +13,8 @@ const { Search } = Input;
 const CheckInCheckOutLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
 
+  console.log(listCheckInCheckOut);
+
   React.useEffect(() => {
     dispatch(homeActions.getCheckInCheckOut());
   }, [dispatch]);
@@ -43,6 +45,9 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     title: 'User',
                     dataIndex: 'user',
                     key: 'user',
+                    render: u => {
+                      return <Text>{u.name}</Text>;
+                    },
                   },
                   {
                     title: 'Status',
@@ -50,18 +55,10 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     key: 'status',
                     render: item => {
                       if (item) {
-                        return <Tag color="green">checked</Tag>;
+                        return <Tag color="green">Checkin</Tag>;
                       } else {
-                        return <Tag color="red">not checked</Tag>;
+                        return <Tag color="red">Checkout</Tag>;
                       }
-                    },
-                  },
-                  {
-                    title: 'Photos',
-                    dataIndex: 'photos',
-                    key: 'photos',
-                    render: item => {
-                      return <Image src={`${url}${item[0].image}`} />;
                     },
                   },
                   {
@@ -71,6 +68,14 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     render: v => {
                       const time = moment(v).format('DD/MM/YYYY');
                       return <Text>{time}</Text>;
+                    },
+                  },
+                  {
+                    title: 'Photos',
+                    dataIndex: 'photos',
+                    key: 'photos',
+                    render: item => {
+                      return <Image src={`${url}${item[0].image}`} height={90} width={60} preview={true}/>;
                     },
                   },
                 ]}
