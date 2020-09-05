@@ -1,7 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { Row, Col, Card, Form, Select, Button, DatePicker } from 'antd';
+import { Row, Col, Card, Form, Select, Button, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';
@@ -16,17 +17,21 @@ const tailLayout = {
   wrapperCol: { offset: 4, span: 16 },
 };
 
-const DownloadLayout = ({ dispatch, home }) => {
-  const { listCheckInCheckOut } = home;
-
+const UploadLayout = ({ dispatch }) => {
   const formRef = React.createRef();
 
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
+  // const normFile = e => {
+  //   console.log('Upload event:', e);
+  //   return e;
+  // };
 
   const onFinish = values => {
     console.log(values);
+    const formData = new FormData();
+    // stockList.forEach(file => {
+    //   formData.append('files[]', file);
+    // });
+    // dispatch(homeActions.uploadStocks(formData));
   };
 
   const onReset = () => {
@@ -40,7 +45,7 @@ const DownloadLayout = ({ dispatch, home }) => {
   return (
     <Row>
       <Col span={24}>
-        <Card title="Download" bordered={false} style={{ width: '100%' }}>
+        <Card title="Upload" bordered={false} style={{ width: '100%' }}>
           <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish}>
             <Form.Item
               name="option"
@@ -51,7 +56,7 @@ const DownloadLayout = ({ dispatch, home }) => {
                 },
               ]}
             >
-              <Select placeholder="Select a option you want to download" allowClear>
+              <Select placeholder="Select a option you want to upload data" allowClear>
                 <Option value="checklists">Checklists</Option>
                 <Option value="checklist-item">Checklist Items</Option>
                 <Option value="photos">Photos</Option>
@@ -61,28 +66,15 @@ const DownloadLayout = ({ dispatch, home }) => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="date"
-              label="Date"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
+              name="files"
+              label="Upload"
+              // valuePropName="file"
+              // getValueFromEvent={normFile}
+              extra="longgggggggggggggggggggggggggggggggggg"
             >
-              <DatePicker style={{ width: '100%' }} onChange={onChange} />
-            </Form.Item>
-            <Form.Item
-              name="category"
-              label="Category"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Select placeholder="Select a category" allowClear>
-                <Option value="yearweek">Yearweek</Option>
-              </Select>
+              <Upload name="logo" listType="picture" className="upload-list-inline">
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
@@ -104,4 +96,4 @@ const mapStateToProps = state => {
     home: state.home,
   };
 };
-export default connect(mapStateToProps)(DownloadLayout);
+export default connect(mapStateToProps)(UploadLayout);

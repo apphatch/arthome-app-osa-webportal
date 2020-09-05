@@ -15,6 +15,10 @@ const UploadLayout = ({ dispatch }) => {
   const [itemListUploading, setItemListUploading] = React.useState(false);
   const [userList, setUserList] = React.useState([]);
   const [userListUploading, setUserListUploading] = React.useState(false);
+  const [shopList, setShopList] = React.useState([]);
+  const [shopListUploading, setShopListUploading] = React.useState(false);
+  const [photoList, setPhotoList] = React.useState([]);
+  const [photoListUploading, setPhotoListUploading] = React.useState(false);
 
   const handleUpload = type => {
     if (type === 'stock') {
@@ -60,38 +64,38 @@ const UploadLayout = ({ dispatch }) => {
         setUserListUploading(false);
       });
     }
+
+    if (type === 'shop') {
+      const formData = new FormData();
+      userList.forEach(file => {
+        formData.append('files[]', file);
+      });
+      setShopListUploading(true);
+      dispatch(homeActions.uploadShops(formData)).then(res => {
+        setShopListUploading(false);
+      });
+    }
   };
 
   const handleTemplate = type => {
     if (type === 'stock') {
-      // setUserListUploading(true);
-      // dispatch(homeActions.downloadStockTemplate()).then(res => {
-      //   setUserListUploading(false);
-      // });
-      // TODO
+      dispatch(homeActions.downloadStockTemplate());
     }
 
     if (type === 'checklist') {
-      // setUserListUploading(true);
-      // dispatch(homeActions.downloadCheckListTemplate()).then(res => {
-      //   setUserListUploading(false);
-      // });
-      // TODO
+      dispatch(homeActions.downloadCheckListTemplate());
     }
 
     if (type === 'item') {
-      // setUserListUploading(true);
-      // dispatch(homeActions.downloadChecklistItemsTemplate()).then(res => {
-      //   setUserListUploading(false);
-      // });
-      // TODO
+      dispatch(homeActions.downloadChecklistItemsTemplate());
     }
 
     if (type === 'user') {
-      setUserListUploading(true);
-      dispatch(homeActions.downloadUserTemplate()).then(res => {
-        setUserListUploading(false);
-      });
+      dispatch(homeActions.downloadUserTemplate());
+    }
+
+    if (type === 'shop') {
+      dispatch(homeActions.downloadShopTemplate());
     }
   };
 
@@ -99,7 +103,7 @@ const UploadLayout = ({ dispatch }) => {
     <Row>
       <Col span={24}>
         <Card title="Upload" bordered={false} style={{ width: '100%' }}>
-        <Row>
+          <Row>
             <Col span={4}>
               <p>Upload users</p>
             </Col>
@@ -137,6 +141,49 @@ const UploadLayout = ({ dispatch }) => {
                 type="primary"
                 onClick={() => handleTemplate('user')}
                 loading={userListUploading}
+              >
+                {'Template'}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <p>Upload shops</p>
+            </Col>
+            <Col span={8}>
+              <Upload
+                onRemove={file => {
+                  const index = shopList.indexOf(file);
+                  const newFileList = shopList.slice();
+                  newFileList.splice(index, 1);
+                  setShopList(newFileList);
+                }}
+                beforeUpload={file => {
+                  setShopList([...shopList, file]);
+                  return false;
+                }}
+                fileList={shopList}
+              >
+                <Button block>
+                  <UploadOutlined /> Select file
+                </Button>
+              </Upload>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleUpload('shop')}
+                disabled={shopList.length === 0}
+                loading={shopListUploading}
+              >
+                {shopListUploading ? 'Uploading' : 'Start Upload'}
+              </Button>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('shop')}
+                loading={shopListUploading}
               >
                 {'Template'}
               </Button>
@@ -268,6 +315,43 @@ const UploadLayout = ({ dispatch }) => {
                 loading={itemListUploading}
               >
                 {'Template'}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <p>Upload photos</p>
+            </Col>
+            <Col span={8}>
+              <Upload
+                onRemove={file => {
+                  const index = photoList.indexOf(file);
+                  const newFileList = photoList.slice();
+                  newFileList.splice(index, 1);
+                  setPhotoList(newFileList);
+                }}
+                beforeUpload={(file, fileList) => {
+                  const newList = photoList.concat(fileList);
+                  setPhotoList(newList);
+                  return false;
+                }}
+                fileList={photoList}
+                directory
+                listType="picture"
+              >
+                <Button block>
+                  <UploadOutlined /> Select file
+                </Button>
+              </Upload>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleUpload('photos')}
+                disabled={photoList.length === 0}
+                loading={photoListUploading}
+              >
+                {photoListUploading ? 'Uploading' : 'Start Upload'}
               </Button>
             </Col>
           </Row>

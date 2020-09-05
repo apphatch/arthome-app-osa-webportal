@@ -99,7 +99,10 @@ const Dashboard = ({ dispatch, home }) => {
 
   const onEditUser = values => {
     const newValues = _.pickBy(values, v => v !== '');
-    dispatch(homeActions.editUser(userId, newValues));
+    dispatch(homeActions.editUser(userId, newValues)).then(res => {
+      handleCancel();
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   const lockUser = userId => {

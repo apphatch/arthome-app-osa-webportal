@@ -10,6 +10,7 @@ import {
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
+import FileSaver from 'file-saver';
 
 const getListUsers = () => {
   return dispatch => {
@@ -183,41 +184,113 @@ const downloadUserTemplate = () => {
       .get('users/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-
-        // const downloadUrl = window.URL.createObjectURL(new Blob([res.data]));
-
-        // const link = document.createElement('a');
-
-        // link.href = downloadUrl;
-
-        // link.setAttribute('download', 'file.txt'); //any other extension
-
-        // document.body.appendChild(link);
-
-        // link.click();
-
-        // link.remove();
-        console.log(res);
+        var link = document.createElement('a');
+        link.innerHTML = 'Download XLS file';
+        link.download = 'user_template.xls';
+        link.href = 'data:application/octet-stream;base64,' + res.data;
+        link.click();
       })
       .catch(error => {
-        const { status } = error.response;
-        if (status === 401 || status === 500) {
-          dispatch(authActions.logout());
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
         }
       });
   };
 };
 
 const downloadStockTemplate = () => {
-  console.log('downloadStockTemplate');
+  return dispatch => {
+    return api()
+      .get('stocks/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        var link = document.createElement('a');
+        link.innerHTML = 'Download XLS file';
+        link.download = 'stock_template.xls';
+        link.href = 'data:application/octet-stream;base64,' + res.data;
+        link.click();
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
 };
 
 const downloadCheckListTemplate = () => {
-  console.log('downloadCheckListTemplate');
+  return dispatch => {
+    return api()
+      .get('checklists/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        var link = document.createElement('a');
+        link.innerHTML = 'Download XLS file';
+        link.download = 'checklist_template.xls';
+        link.href = 'data:application/octet-stream;base64,' + res.data;
+        link.click();
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
 };
 
 const downloadChecklistItemsTemplate = () => {
-  console.log('downloadChecklistItemsTemplate');
+  return dispatch => {
+    return api()
+      .get('checklist_items/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        var link = document.createElement('a');
+        link.innerHTML = 'Download XLS file';
+        link.download = 'checklist_item_template.xls';
+        link.href = 'data:application/octet-stream;base64,' + res.data;
+        link.click();
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadShopTemplate = () => {
+  return dispatch => {
+    return api()
+      .get('shops/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        var link = document.createElement('a');
+        link.innerHTML = 'Download XLS file';
+        link.download = 'shop_template.xls';
+        link.href = 'data:application/octet-stream;base64,' + res.data;
+        link.click();
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
 };
 
 const homeActions = {
@@ -234,6 +307,7 @@ const homeActions = {
   downloadStockTemplate,
   downloadCheckListTemplate,
   downloadChecklistItemsTemplate,
+  downloadShopTemplate,
 };
 
 export default homeActions;

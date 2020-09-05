@@ -16,6 +16,7 @@ const api = () => {
   }
   
   headers.App = 'osa-webportal';
+  console.log(headers);
 
   const api = axios.create({
     baseURL: apiUrl,
