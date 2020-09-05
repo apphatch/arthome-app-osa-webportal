@@ -177,6 +177,49 @@ const getCheckInCheckOut = () => {
   };
 };
 
+const downloadUserTemplate = () => {
+  return dispatch => {
+    return api()
+      .get('users/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+
+        // const downloadUrl = window.URL.createObjectURL(new Blob([res.data]));
+
+        // const link = document.createElement('a');
+
+        // link.href = downloadUrl;
+
+        // link.setAttribute('download', 'file.txt'); //any other extension
+
+        // document.body.appendChild(link);
+
+        // link.click();
+
+        // link.remove();
+        console.log(res);
+      })
+      .catch(error => {
+        const { status } = error.response;
+        if (status === 401 || status === 500) {
+          dispatch(authActions.logout());
+        }
+      });
+  };
+};
+
+const downloadStockTemplate = () => {
+  console.log('downloadStockTemplate');
+};
+
+const downloadCheckListTemplate = () => {
+  console.log('downloadCheckListTemplate');
+};
+
+const downloadChecklistItemsTemplate = () => {
+  console.log('downloadChecklistItemsTemplate');
+};
+
 const homeActions = {
   getListUsers,
   uploadStocks,
@@ -187,6 +230,10 @@ const homeActions = {
   unlockUser,
   uploadUsers,
   getCheckInCheckOut,
+  downloadUserTemplate,
+  downloadStockTemplate,
+  downloadCheckListTemplate,
+  downloadChecklistItemsTemplate,
 };
 
 export default homeActions;
