@@ -10,7 +10,7 @@ import {
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
-import FileSaver from 'file-saver';
+import downloadXlsFromBase64 from '../../../common/download';
 
 const getListUsers = () => {
   return dispatch => {
@@ -184,11 +184,7 @@ const downloadUserTemplate = () => {
       .get('users/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-        var link = document.createElement('a');
-        link.innerHTML = 'Download XLS file';
-        link.download = 'user_template.xls';
-        link.href = 'data:application/octet-stream;base64,' + res.data;
-        link.click();
+        downloadXlsFromBase64(res.data, 'user_template', 'xls');
       })
       .catch(error => {
         if (error.response) {
@@ -207,11 +203,7 @@ const downloadStockTemplate = () => {
       .get('stocks/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-        var link = document.createElement('a');
-        link.innerHTML = 'Download XLS file';
-        link.download = 'stock_template.xls';
-        link.href = 'data:application/octet-stream;base64,' + res.data;
-        link.click();
+        downloadXlsFromBase64(res.data, 'stock_template', 'xls');
       })
       .catch(error => {
         if (error.response) {
@@ -230,11 +222,7 @@ const downloadCheckListTemplate = () => {
       .get('checklists/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-        var link = document.createElement('a');
-        link.innerHTML = 'Download XLS file';
-        link.download = 'checklist_template.xls';
-        link.href = 'data:application/octet-stream;base64,' + res.data;
-        link.click();
+        downloadXlsFromBase64(res.data, 'checklist_template', 'xls');
       })
       .catch(error => {
         if (error.response) {
@@ -253,11 +241,7 @@ const downloadChecklistItemsTemplate = () => {
       .get('checklist_items/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-        var link = document.createElement('a');
-        link.innerHTML = 'Download XLS file';
-        link.download = 'checklist_item_template.xls';
-        link.href = 'data:application/octet-stream;base64,' + res.data;
-        link.click();
+        downloadXlsFromBase64(res.data, 'checklist_item_template', 'xls');
       })
       .catch(error => {
         if (error.response) {
@@ -276,11 +260,7 @@ const downloadShopTemplate = () => {
       .get('shops/import_template')
       .then(res => {
         dispatch(authActions.updateAuthorization(res.headers));
-        var link = document.createElement('a');
-        link.innerHTML = 'Download XLS file';
-        link.download = 'shop_template.xls';
-        link.href = 'data:application/octet-stream;base64,' + res.data;
-        link.click();
+        downloadXlsFromBase64(res.data, 'shop_template', 'xls');
       })
       .catch(error => {
         if (error.response) {

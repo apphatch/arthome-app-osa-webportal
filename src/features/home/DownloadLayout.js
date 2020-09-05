@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import homeActions from './redux/actions';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const layout = {
   labelCol: { span: 4 },
@@ -20,10 +21,6 @@ const DownloadLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
 
   const formRef = React.createRef();
-
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
 
   const onFinish = values => {
     console.log(values);
@@ -63,13 +60,9 @@ const DownloadLayout = ({ dispatch, home }) => {
             <Form.Item
               name="date"
               label="Date"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
+              rules={[{ type: 'array', required: true, message: 'Please select time!' }]}
             >
-              <DatePicker style={{ width: '100%' }} onChange={onChange} />
+              <RangePicker style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
               name="category"
@@ -81,7 +74,13 @@ const DownloadLayout = ({ dispatch, home }) => {
               ]}
             >
               <Select placeholder="Select a category" allowClear>
-                <Option value="yearweek">Yearweek</Option>
+                <Option value="oos">oos</Option>
+                <Option value="sos">sos</Option>
+                <Option value="osa">osa</Option>
+                <Option value="weekend">weekend</Option>
+                <Option value="promotions">promotions</Option>
+                <Option value="rental">rental</Option>
+                <Option value="npd">npd</Option>
               </Select>
             </Form.Item>
             <Form.Item {...tailLayout}>
