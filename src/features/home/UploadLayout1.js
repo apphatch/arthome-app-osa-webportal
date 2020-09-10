@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import { Row, Col, Card, Form, Select, Button, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -19,23 +18,89 @@ const tailLayout = {
 
 const UploadLayout = ({ dispatch }) => {
   const formRef = React.createRef();
+  const [directory, setDirectory] = React.useState(false);
+  const [hideTemplate, setHideTemplate] = React.useState(true);
+  const [acceptType, setAcceptType] = React.useState('.xls,.xlsx');
+  const [optionValue, setOptionValue] = React.useState('');
 
-  // const normFile = e => {
-  //   console.log('Upload event:', e);
-  //   return e;
-  // };
+  const normFile = e => {
+    console.log('Upload event:', e);
+
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e && e.fileList;
+  };
+
+  const onChangeOption = value => {
+    setOptionValue(value);
+    switch (value) {
+      case 'photos': {
+        setDirectory(true);
+        setAcceptType('.jpg,.jpeg,.png');
+        setHideTemplate(true);
+        break;
+      }
+      default:
+        setDirectory(false);
+        setAcceptType('.xls,.xlsx');
+        setHideTemplate(false);
+        break;
+    }
+  };
 
   const onFinish = values => {
-    console.log(values);
     const formData = new FormData();
-    // stockList.forEach(file => {
-    //   formData.append('files[]', file);
-    // });
-    // dispatch(homeActions.uploadStocks(formData));
+    values.files.forEach(file => {
+      formData.append('files[]', file);
+    });
+
+    switch (values.options) {
+      case 'stocks':
+        dispatch(homeActions.uploadStocks(formData));
+        break;
+      case 'checklists':
+        dispatch(homeActions.uploadChecklists(formData));
+        break;
+      case 'checklist_items':
+        dispatch(homeActions.uploadChecklistItems(formData));
+        break;
+      case 'users':
+        dispatch(homeActions.uploadUsers(formData));
+        break;
+      case 'shops':
+        dispatch(homeActions.uploadShops(formData));
+        break;
+      default:
+        break;
+    }
   };
 
   const onReset = () => {
     formRef.current.resetFields();
+  };
+
+  const downloadTemplate = () => {
+    switch (optionValue) {
+      case 'stocks':
+        dispatch(homeActions.downloadStockTemplate());
+        break;
+      case 'checklists':
+        dispatch(homeActions.downloadCheckListTemplate());
+        break;
+      case 'checklist_items':
+        dispatch(homeActions.downloadChecklistItemsTemplate());
+        break;
+      case 'users':
+        dispatch(homeActions.downloadUserTemplate());
+        break;
+      case 'shops':
+        dispatch(homeActions.downloadShopTemplate());
+        break;
+      default:
+        break;
+    }
   };
 
   React.useEffect(() => {
@@ -56,9 +121,13 @@ const UploadLayout = ({ dispatch }) => {
                 },
               ]}
             >
-              <Select placeholder="Select a option you want to upload data" allowClear>
+              <Select
+                placeholder="Select a option you want to upload data"
+                allowClear
+                onChange={onChangeOption}
+              >
                 <Option value="checklists">Checklists</Option>
-                <Option value="checklist-item">Checklist Items</Option>
+                <Option value="checklist_items">Checklist Items</Option>
                 <Option value="photos">Photos</Option>
                 <Option value="stocks">Stocks</Option>
                 <Option value="shops">Shops</Option>
@@ -68,14 +137,32 @@ const UploadLayout = ({ dispatch }) => {
             <Form.Item
               name="files"
               label="Upload"
-              // valuePropName="file"
-              // getValueFromEvent={normFile}
-              extra="longgggggggggggggggggggggggggggggggggg"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
             >
-              <Upload name="logo" listType="picture" className="upload-list-inline">
+              <Upload
+                name="logo"
+                listType="picture"
+                className="upload-list-inline"
+                beforeUpload={() => false}
+                directory={directory}
+                accept={acceptType}
+              >
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>
+            {!hideTemplate && (
+              <Form.Item label="Template">
+                <Button type="primary" onClick={downloadTemplate}>
+                  Download
+                </Button>
+              </Form.Item>
+            )}
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                 Submit
