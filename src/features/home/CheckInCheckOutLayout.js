@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { Row, Col, Card, Table, Tag, Typography, Input, Image } from 'antd';
+import { Row, Col, Card, Table, Tag, Typography, Input, Image, Space } from 'antd';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';
@@ -50,35 +50,72 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     },
                   },
                   {
-                    title: 'Status',
-                    dataIndex: 'is_checkin',
-                    key: 'status',
-                    render: item => {
-                      if (item) {
-                        return <Tag color="green">Checkin</Tag>;
-                      } else {
-                        return <Tag color="red">Checkout</Tag>;
-                      }
+                    title: 'Shop',
+                    dataIndex: 'shop',
+                    key: 'shop',
+                    render: data => {
+                      return (
+                        <Space direction="vertical">
+                          <Text>{data.name}</Text>
+                          <Text>{data.importing_id}</Text>
+                        </Space>
+                      );
                     },
                   },
                   {
                     title: 'Time',
                     dataIndex: 'time',
                     key: 'time',
-                    render: v => {
-                      const time = moment(v).format('DD/MM/YYYY');
-                      return <Text>{time}</Text>;
+                    render: (v, record) => {
+                      const timeCheckin = moment(v).format('DD-MM-YYYY HH:mm:ss');
+                      const timeCheckout =
+                        record.user_checkout !== null && record.user_checkout.time !== null
+                          ? moment(record.user_checkout.time).format('DD-MM-YYYY HH:mm:ss')
+                          : '';
+                      return (
+                        <Space direction="vertical">
+                          <Text>{`Checkin: ${timeCheckin}`}</Text>
+                          <Text>{`Checkout: ${timeCheckout}`}</Text>
+                        </Space>
+                      );
                     },
                   },
                   {
                     title: 'Photos',
                     dataIndex: 'photos',
                     key: 'photos',
-                    render: item => {
-                      return <Image src={`${url}${item[0].image}`} height={90} width={60} preview={true}/>;
+                    render: (photo, record) => {
+                      return (
+                        <>
+                          <Image
+                            src={`${url}${photo[0].image}`}
+                            height={90}
+                            width={60}
+                            preview={true}
+                          />
+                          {record.user_checkout.image && (
+                            <Image
+                              src={`${url}${record.user_checkout.image}`}
+                              height={90}
+                              width={60}
+                              preview={true}
+                            />
+                          )}
+                        </>
+                      );
                     },
                   },
                 ]}
+                expandable={{
+                  expandedRowRender: record => {
+                    return record.shop_checkouts.map(shop => (
+                      <Col key={shop.id} span={4}>
+                        <Image alt="example" src={`${url}${shop.photos[0].image}`} preview={true} />
+                      </Col>
+                    ));
+                  },
+                  rowExpandable: record => record.shop_checkouts.length > 0,
+                }}
                 dataSource={listCheckInCheckOut}
               />
             </Col>

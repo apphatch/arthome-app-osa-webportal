@@ -5,9 +5,9 @@ export default {
   component: HomeLayout,
   role: 'privated',
   childRoutes: [
-    { path: 'dashboard', component: Dashboard, isIndex: true },
+    { path: 'cico', component: CheckInCheckOutLayout, isIndex: true },
+    { path: 'user', component: Dashboard },
     { path: 'upload', component: UploadLayout },
-    { path: 'cico', component: CheckInCheckOutLayout },
     { path: 'download', component: DownloadLayout },
   ],
 };
