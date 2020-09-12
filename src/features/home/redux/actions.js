@@ -7,6 +7,7 @@ import {
   IMPORT_CHECKLIST_ITEMS_SUCCESS,
   EDIT_USER_SUCCESS,
   IMPORT_USERS_SUCCESS,
+  IMPORT_SHOPS_SUCCESS,
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
@@ -80,6 +81,25 @@ const uploadChecklistItems = data => {
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
         }
+      });
+  };
+};
+
+const uploadFull = data => {
+  return dispatch => {
+    return api()
+      .post('shops/import_osa', data)
+      .then(res => {
+        dispatch(success(IMPORT_SHOPS_SUCCESS, res.status));
+        dispatch(authActions.updateAuthorization(res.headers));
+        console.log(res);
+      })
+      .catch(error => {
+        const { status } = error.response;
+        console.log(status);
+        // if (status === 401 || status === 500) {
+        //   dispatch(authActions.logout());
+        // }
       });
   };
 };
@@ -278,6 +298,7 @@ const homeActions = {
   uploadStocks,
   uploadChecklists,
   uploadChecklistItems,
+  uploadFull,
   editUser,
   lockUser,
   unlockUser,

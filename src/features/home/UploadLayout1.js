@@ -17,11 +17,10 @@ const tailLayout = {
 };
 
 const UploadLayout = ({ dispatch }) => {
-  const formRef = React.createRef();
   const [directory, setDirectory] = React.useState(false);
   const [hideTemplate, setHideTemplate] = React.useState(true);
   const [acceptType, setAcceptType] = React.useState('.xls,.xlsx');
-  const [optionValue, setOptionValue] = React.useState('');
+  const [optionValue, setOptionValue] = React.useState('full');
 
   const normFile = e => {
     console.log('Upload event:', e);
@@ -42,6 +41,12 @@ const UploadLayout = ({ dispatch }) => {
         setHideTemplate(true);
         break;
       }
+      case 'full': {
+        setDirectory(false);
+        setAcceptType('.xls,.xlsx');
+        setHideTemplate(true);
+        break;
+      }
       default:
         setDirectory(false);
         setAcceptType('.xls,.xlsx');
@@ -52,11 +57,14 @@ const UploadLayout = ({ dispatch }) => {
 
   const onFinish = values => {
     const formData = new FormData();
-    values.files.forEach(file => {
-      formData.append('files[]', file);
+    values.files.forEach((file, i) => {
+      formData.append(`files[]`, file);
     });
 
-    switch (values.options) {
+    switch (values.option) {
+      case 'full':
+        dispatch(homeActions.uploadFull(formData));
+        break;
       case 'stocks':
         dispatch(homeActions.uploadStocks(formData));
         break;
@@ -75,10 +83,6 @@ const UploadLayout = ({ dispatch }) => {
       default:
         break;
     }
-  };
-
-  const onReset = () => {
-    formRef.current.resetFields();
   };
 
   const downloadTemplate = () => {
@@ -103,15 +107,16 @@ const UploadLayout = ({ dispatch }) => {
     }
   };
 
-  React.useEffect(() => {
-    // dispatch(homeActions.getCheckInCheckOut());
-  }, [dispatch]);
-
   return (
     <Row>
       <Col span={24}>
         <Card title="Upload" bordered={false} style={{ width: '100%' }}>
-          <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish}>
+          <Form
+            {...layout}
+            name="upload-form"
+            initialValues={{ option: 'full' }}
+            onFinish={onFinish}
+          >
             <Form.Item
               name="option"
               label="Option"
@@ -126,6 +131,7 @@ const UploadLayout = ({ dispatch }) => {
                 allowClear
                 onChange={onChangeOption}
               >
+                <Option value="full">Full</Option>
                 <Option value="checklists">Checklists</Option>
                 <Option value="checklist_items">Checklist Items</Option>
                 <Option value="photos">Photos</Option>
@@ -166,9 +172,6 @@ const UploadLayout = ({ dispatch }) => {
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                 Submit
-              </Button>
-              <Button htmlType="button" onClick={onReset}>
-                Reset
               </Button>
             </Form.Item>
           </Form>
