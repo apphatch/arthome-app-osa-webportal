@@ -108,11 +108,22 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                 ]}
                 expandable={{
                   expandedRowRender: record => {
-                    return record.shop_checkouts.map(shop => (
-                      <Col key={shop.id} span={4}>
-                        <Image alt="example" src={`${url}${shop.photos[0].image}`} preview={true} />
-                      </Col>
-                    ));
+                    return (
+                      record.shop_checkouts !== null &&
+                      record.shop_checkouts.map(
+                        shop =>
+                          shop.photos &&
+                          shop.photos.length > 0 && (
+                            <Col key={shop.id} span={4}>
+                              <Image
+                                alt="example"
+                                src={`${url}${shop.photos[0].image}`}
+                                preview={true}
+                              />
+                            </Col>
+                          ),
+                      )
+                    );
                   },
                   rowExpandable: record => record.shop_checkouts.length > 0,
                 }}
