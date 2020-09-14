@@ -49,12 +49,13 @@ const DownloadLayout = ({ dispatch, home }) => {
               ]}
             >
               <Select placeholder="Select a option you want to download" allowClear>
-                <Option value="checklists">Checklists</Option>
-                <Option value="checklist-item">Checklist Items</Option>
-                <Option value="photos">Photos</Option>
-                <Option value="stocks">Stocks</Option>
-                <Option value="shops">Shops</Option>
-                <Option value="users">Users</Option>
+                <Option value="oos">oos</Option>
+                <Option value="sos">sos</Option>
+                <Option value="osa">osa</Option>
+                <Option value="weekend">weekend</Option>
+                <Option value="promotions">promotions</Option>
+                <Option value="rental">rental</Option>
+                <Option value="npd">npd</Option>
               </Select>
             </Form.Item>
             <Form.Item
@@ -62,7 +63,7 @@ const DownloadLayout = ({ dispatch, home }) => {
               label="Date"
               rules={[{ type: 'array', required: true, message: 'Please select time!' }]}
             >
-              <RangePicker style={{ width: '100%' }} />
+              <RangePicker style={{ width: '100%' }} format="DD-MM-YYYY" />
             </Form.Item>
             <Form.Item
               name="category"

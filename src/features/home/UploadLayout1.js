@@ -162,17 +162,15 @@ const UploadLayout = ({ dispatch }) => {
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>
-            {!hideTemplate && (
-              <Form.Item label="Template">
-                <Button type="primary" onClick={downloadTemplate}>
-                  Download
-                </Button>
-              </Form.Item>
-            )}
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                 Submit
               </Button>
+              {!hideTemplate && (
+                <Button type="primary" onClick={downloadTemplate}>
+                  Template
+                </Button>
+              )}
             </Form.Item>
           </Form>
         </Card>
