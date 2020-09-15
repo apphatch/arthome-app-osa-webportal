@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { Row, Col, Card, Form, Select, Button, DatePicker } from 'antd';
+import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';
@@ -66,23 +66,15 @@ const DownloadLayout = ({ dispatch, home }) => {
               <RangePicker style={{ width: '100%' }} format="DD-MM-YYYY" />
             </Form.Item>
             <Form.Item
-              name="category"
-              label="Category"
+              name="yearweek"
+              label="Yearweek"
               rules={[
                 {
                   required: true,
                 },
               ]}
             >
-              <Select placeholder="Select a category" allowClear>
-                <Option value="oos">oos</Option>
-                <Option value="sos">sos</Option>
-                <Option value="osa">osa</Option>
-                <Option value="weekend">weekend</Option>
-                <Option value="promotions">promotions</Option>
-                <Option value="rental">rental</Option>
-                <Option value="npd">npd</Option>
-              </Select>
+              <Input placeholder="yearweek" />
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
