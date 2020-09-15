@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
 import { connect } from 'react-redux';
-import homeActions from './redux/actions';
+import downloadActions from './redux/download.actions';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -17,28 +17,49 @@ const tailLayout = {
   wrapperCol: { offset: 4, span: 16 },
 };
 
-const DownloadLayout = ({ dispatch, home }) => {
-  const { listCheckInCheckOut } = home;
-
-  const formRef = React.createRef();
+const DownloadLayout = ({ dispatch, user }) => {
+  const [form] = Form.useForm();
 
   const onFinish = values => {
-    console.log(values);
+    const formData = {
+      user_id: user.user_id,
+      date_from: values.date[0],
+      date_to: values.date[1],
+      yearweek: values.yearweek,
+    };
+    switch (values.option) {
+      case 'oos':
+        dispatch(downloadActions.downloadSOS(formData));
+        break;
+      case 'sos':
+        dispatch(downloadActions.downloadSOS(formData));
+        break;
+      case 'weekend':
+        dispatch(downloadActions.downloadWeekend(formData));
+        break;
+      case 'promotions':
+        dispatch(downloadActions.downloadPromotions(formData));
+        break;
+      case 'rental':
+        dispatch(downloadActions.downloadRental(formData));
+        break;
+      case 'npd':
+        dispatch(downloadActions.downloadNpd(formData));
+        break;
+      default:
+        break;
+    }
   };
 
   const onReset = () => {
-    formRef.current.resetFields();
+    form.resetFields();
   };
-
-  React.useEffect(() => {
-    // dispatch(homeActions.getCheckInCheckOut());
-  }, [dispatch]);
 
   return (
     <Row>
       <Col span={24}>
         <Card title="Download" bordered={false} style={{ width: '100%' }}>
-          <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish}>
+          <Form {...layout} form={form} name="control-ref" onFinish={onFinish}>
             <Form.Item
               name="option"
               label="Option"
@@ -51,7 +72,6 @@ const DownloadLayout = ({ dispatch, home }) => {
               <Select placeholder="Select a option you want to download" allowClear>
                 <Option value="oos">oos</Option>
                 <Option value="sos">sos</Option>
-                <Option value="osa">osa</Option>
                 <Option value="weekend">weekend</Option>
                 <Option value="promotions">promotions</Option>
                 <Option value="rental">rental</Option>
@@ -93,7 +113,7 @@ const DownloadLayout = ({ dispatch, home }) => {
 
 const mapStateToProps = state => {
   return {
-    home: state.home,
+    user: state.auth && state.auth.user ? state.auth.user : null,
   };
 };
 export default connect(mapStateToProps)(DownloadLayout);
