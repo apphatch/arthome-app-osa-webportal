@@ -87,7 +87,7 @@ const uploadChecklistItems = data => {
 
 const uploadFull = data => {
   return dispatch => {
-    return api()
+    return api('multipart/form-data')
       .post('shops/import_osa', data)
       .then(res => {
         dispatch(success(IMPORT_SHOPS_SUCCESS, res.status));
@@ -96,10 +96,9 @@ const uploadFull = data => {
       })
       .catch(error => {
         const { status } = error.response;
-        console.log(status);
-        // if (status === 401 || status === 500) {
-        //   dispatch(authActions.logout());
-        // }
+        if (status === 401 || status === 500) {
+          dispatch(authActions.logout());
+        }
       });
   };
 };

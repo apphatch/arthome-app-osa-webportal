@@ -17,10 +17,12 @@ const tailLayout = {
 };
 
 const UploadLayout = ({ dispatch }) => {
+  const [form] = Form.useForm();
   const [directory, setDirectory] = React.useState(false);
   const [hideTemplate, setHideTemplate] = React.useState(true);
   const [acceptType, setAcceptType] = React.useState('.xls,.xlsx');
   const [optionValue, setOptionValue] = React.useState('full');
+  const [files, setFiles] = React.useState([]);
 
   const normFile = e => {
     console.log('Upload event:', e);
@@ -58,7 +60,7 @@ const UploadLayout = ({ dispatch }) => {
   const onFinish = values => {
     const formData = new FormData();
     values.files.forEach((file, i) => {
-      formData.append(`files[]`, file);
+      formData.append('files[]', file.originFileObj);
     });
 
     switch (values.option) {
@@ -83,6 +85,7 @@ const UploadLayout = ({ dispatch }) => {
       default:
         break;
     }
+    form.resetFields();
   };
 
   const downloadTemplate = () => {
@@ -116,6 +119,7 @@ const UploadLayout = ({ dispatch }) => {
             name="upload-form"
             initialValues={{ option: 'full' }}
             onFinish={onFinish}
+            form={form}
           >
             <Form.Item
               name="option"
@@ -155,7 +159,10 @@ const UploadLayout = ({ dispatch }) => {
                 name="logo"
                 listType="picture"
                 className="upload-list-inline"
-                beforeUpload={() => false}
+                beforeUpload={file => {
+                  setFiles([...files, file]);
+                  return false;
+                }}
                 directory={directory}
                 accept={acceptType}
               >
