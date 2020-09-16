@@ -80,7 +80,7 @@ const HomeLayout = ({ children, dispatch, isLoading }) => {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.home ? state.home.isLoading : false,
+    isLoading: state.home && state.home.isLoading ? state.home.isLoading : false,
   };
 };
 
