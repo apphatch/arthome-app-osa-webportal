@@ -1,21 +1,25 @@
 import api from '../../../common/axiosConfig';
 import { request, success, failure } from '../../../common/reduxActions';
-import {} from './constants';
+import { DOWNLOAD_REQUEST, DOWNLOAD_SUCCESS, DOWNLOAD_FAILURE } from './download.constants';
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
 
-const downloadOOS = () => {
+const downloadOOS = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_oos')
+      .get('io/export_osa_oos', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'oos', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }
@@ -24,18 +28,21 @@ const downloadOOS = () => {
   };
 };
 
-const downloadSOS = () => {
+const downloadSOS = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_sos')
+      .get('io/export_osa_sos', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'sos', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }
@@ -44,18 +51,21 @@ const downloadSOS = () => {
   };
 };
 
-const downloadWeekend = () => {
+const downloadWeekend = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_weekend')
+      .get('io/export_osa_weekend', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'weekend', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }
@@ -64,18 +74,21 @@ const downloadWeekend = () => {
   };
 };
 
-const downloadPromotions = () => {
+const downloadPromotions = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_promotions')
+      .get('io/export_osa_promotions', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'promotions', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }
@@ -84,18 +97,21 @@ const downloadPromotions = () => {
   };
 };
 
-const downloadRental = () => {
+const downloadRental = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_rental')
+      .get('io/export_osa_rental', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'rental', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }
@@ -104,18 +120,21 @@ const downloadRental = () => {
   };
 };
 
-const downloadNpd = () => {
+const downloadNpd = options => {
   return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_npd')
+      .get('io/export_osa_npd', options)
       .then(res => {
         console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'npd', 'xls');
       })
       .catch(error => {
         if (error.response) {
           const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
           }

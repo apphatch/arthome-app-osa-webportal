@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
@@ -29,7 +28,7 @@ const DownloadLayout = ({ dispatch, user }) => {
     };
     switch (values.option) {
       case 'oos':
-        dispatch(downloadActions.downloadSOS(formData));
+        dispatch(downloadActions.downloadOOS(formData));
         break;
       case 'sos':
         dispatch(downloadActions.downloadSOS(formData));

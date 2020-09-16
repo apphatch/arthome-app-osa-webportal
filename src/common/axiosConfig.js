@@ -22,7 +22,7 @@ const api = contentType => {
 
   const api = axios.create({
     baseURL: apiUrl,
-    timeout: 10000,
+    timeout: 30000,
     headers,
     withCredentials: true,
   });
