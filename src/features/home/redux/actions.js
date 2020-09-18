@@ -9,6 +9,7 @@ import {
   IMPORT_USERS_SUCCESS,
   IMPORT_SHOPS_SUCCESS,
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
+  IMPORT_PHOTOS_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
@@ -33,7 +34,7 @@ const getListUsers = () => {
 
 const uploadStocks = data => {
   return dispatch => {
-    return api()
+    return api('multipart/form-data')
       .post('stocks/import', data)
       .then(res => {
         dispatch(success(IMPORT_STOCKS_SUCCESS, res.status));
@@ -51,7 +52,7 @@ const uploadStocks = data => {
 
 const uploadChecklists = data => {
   return dispatch => {
-    return api()
+    return api('multipart/form-data')
       .post('checklists/import', data)
       .then(res => {
         dispatch(success(IMPORT_CHECKLISTS_SUCCESS, res.status));
@@ -69,7 +70,7 @@ const uploadChecklists = data => {
 
 const uploadChecklistItems = data => {
   return dispatch => {
-    return api()
+    return api('multipart/form-data')
       .post('checklist_items/import', data)
       .then(res => {
         dispatch(success(IMPORT_CHECKLIST_ITEMS_SUCCESS, res.status));
@@ -98,6 +99,24 @@ const uploadFull = data => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
+        }
+      });
+  };
+};
+
+const uploadPhotos = data => {
+  return dispatch => {
+    return api('multipart/form-data')
+      .post('io/import_osa_photos', data)
+      .then(res => {
+        dispatch(success(IMPORT_PHOTOS_SUCCESS, res.status));
+        dispatch(authActions.updateAuthorization(res.headers));
+        console.log(res);
+      })
+      .catch(error => {
+        const { status } = error.response;
+        if (status === 401 || status === 500) {
+          // dispatch(authActions.logout());
         }
       });
   };
@@ -302,6 +321,7 @@ const homeActions = {
   lockUser,
   unlockUser,
   uploadUsers,
+  uploadPhotos,
   getCheckInCheckOut,
   downloadUserTemplate,
   downloadStockTemplate,

@@ -82,6 +82,9 @@ const UploadLayout = ({ dispatch }) => {
       case 'shops':
         dispatch(homeActions.uploadShops(formData));
         break;
+      case 'photos':
+        dispatch(homeActions.uploadPhotos(formData));
+        break;
       default:
         break;
     }
