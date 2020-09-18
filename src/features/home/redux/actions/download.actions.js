@@ -1,8 +1,8 @@
-import api from '../../../common/axiosConfig';
-import { request, success, failure } from '../../../common/reduxActions';
-import { DOWNLOAD_REQUEST, DOWNLOAD_SUCCESS, DOWNLOAD_FAILURE } from './download.constants';
-import authActions from '../../auth/redux/actions';
-import downloadXlsFromBase64 from '../../../common/download';
+import api from '../../../../common/axiosConfig';
+import { request, success, failure } from '../../../../common/reduxActions';
+import { DOWNLOAD_REQUEST, DOWNLOAD_SUCCESS, DOWNLOAD_FAILURE } from '../constants';
+import authActions from '../../../auth/redux/actions';
+import downloadXlsFromBase64 from '../../../../common/download';
 
 const downloadOOS = options => {
   return dispatch => {
@@ -143,6 +143,116 @@ const downloadNpd = options => {
   };
 };
 
+const downloadUserTemplate = () => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get('users/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'user_template', 'xls');
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadStockTemplate = () => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get('stocks/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'stock_template', 'xls');
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadCheckListTemplate = () => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get('checklists/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'checklist_template', 'xls');
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadChecklistItemsTemplate = () => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get('checklist_items/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'checklist_item_template', 'xls');
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadShopTemplate = () => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get('shops/import_template')
+      .then(res => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'shop_template', 'xls');
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
 const downloadActions = {
   downloadOOS,
   downloadSOS,
@@ -150,6 +260,11 @@ const downloadActions = {
   downloadPromotions,
   downloadRental,
   downloadNpd,
+  downloadUserTemplate,
+  downloadStockTemplate,
+  downloadCheckListTemplate,
+  downloadChecklistItemsTemplate,
+  downloadShopTemplate,
 };
 
 export default downloadActions;

@@ -1,101 +1,115 @@
 import React from 'react';
 
-import { Row, Col, Card, Button, Upload } from 'antd';
+import { Row, Col, Card, Form, Select, Button, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
-import homeActions from './redux/actions';
+import { importActions, downloadActions } from './redux/actions';
+
+const { Option } = Select;
+
+const layout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 4, span: 16 },
+};
 
 const UploadLayout = ({ dispatch }) => {
-  const [stockList, setStockList] = React.useState([]);
-  const [stockUploading, setStockUploading] = React.useState(false);
-  const [checkList, setCheckList] = React.useState([]);
-  const [checkListUploading, setCheckListUploading] = React.useState(false);
-  const [itemList, setItemList] = React.useState([]);
-  const [itemListUploading, setItemListUploading] = React.useState(false);
-  const [userList, setUserList] = React.useState([]);
-  const [userListUploading, setUserListUploading] = React.useState(false);
-  const [shopList, setShopList] = React.useState([]);
-  const [shopListUploading, setShopListUploading] = React.useState(false);
-  const [photoList, setPhotoList] = React.useState([]);
-  const [photoListUploading, setPhotoListUploading] = React.useState(false);
+  const [form] = Form.useForm();
+  const [directory, setDirectory] = React.useState(false);
+  const [hideTemplate, setHideTemplate] = React.useState(true);
+  const [acceptType, setAcceptType] = React.useState('.xls,.xlsx');
+  const [optionValue, setOptionValue] = React.useState('full');
+  const [files, setFiles] = React.useState([]);
 
-  const handleUpload = type => {
-    if (type === 'stock') {
-      const formData = new FormData();
-      stockList.forEach(file => {
-        formData.append('files[]', file);
-      });
-      setStockUploading(true);
-      dispatch(homeActions.uploadStocks(formData)).then(res => {
-        setStockUploading(false);
-      });
+  const normFile = e => {
+    console.log('Upload event:', e);
+
+    if (Array.isArray(e)) {
+      return e;
     }
 
-    if (type === 'checklist') {
-      const formData = new FormData();
-      checkList.forEach(file => {
-        formData.append('files[]', file);
-      });
-      setCheckListUploading(true);
-      dispatch(homeActions.uploadChecklists(formData)).then(res => {
-        setCheckListUploading(false);
-      });
-    }
+    return e && e.fileList;
+  };
 
-    if (type === 'item') {
-      const formData = new FormData();
-      itemList.forEach(file => {
-        formData.append('files[]', file);
-      });
-      setItemListUploading(true);
-      dispatch(homeActions.uploadChecklistItems(formData)).then(res => {
-        setItemListUploading(false);
-      });
-    }
-
-    if (type === 'user') {
-      const formData = new FormData();
-      userList.forEach(file => {
-        formData.append('files[]', file);
-      });
-      setUserListUploading(true);
-      dispatch(homeActions.uploadUsers(formData)).then(res => {
-        setUserListUploading(false);
-      });
-    }
-
-    if (type === 'shop') {
-      const formData = new FormData();
-      userList.forEach(file => {
-        formData.append('files[]', file);
-      });
-      setShopListUploading(true);
-      dispatch(homeActions.uploadShops(formData)).then(res => {
-        setShopListUploading(false);
-      });
+  const onChangeOption = value => {
+    setOptionValue(value);
+    switch (value) {
+      case 'photos': {
+        setDirectory(true);
+        setAcceptType('.jpg,.jpeg,.png');
+        setHideTemplate(true);
+        break;
+      }
+      case 'full': {
+        setDirectory(false);
+        setAcceptType('.xls,.xlsx');
+        setHideTemplate(true);
+        break;
+      }
+      default:
+        setDirectory(false);
+        setAcceptType('.xls,.xlsx');
+        setHideTemplate(false);
+        break;
     }
   };
 
-  const handleTemplate = type => {
-    if (type === 'stock') {
-      dispatch(homeActions.downloadStockTemplate());
-    }
+  const onFinish = values => {
+    const formData = new FormData();
+    values.files.forEach((file, i) => {
+      formData.append('files[]', file.originFileObj);
+    });
 
-    if (type === 'checklist') {
-      dispatch(homeActions.downloadCheckListTemplate());
+    switch (values.option) {
+      case 'full':
+        dispatch(importActions.uploadFull(formData));
+        break;
+      case 'stocks':
+        dispatch(importActions.uploadStocks(formData));
+        break;
+      case 'checklists':
+        dispatch(importActions.uploadChecklists(formData));
+        break;
+      case 'checklist_items':
+        dispatch(importActions.uploadChecklistItems(formData));
+        break;
+      case 'users':
+        dispatch(importActions.uploadUsers(formData));
+        break;
+      case 'shops':
+        dispatch(importActions.uploadShops(formData));
+        break;
+      case 'photos':
+        dispatch(importActions.uploadPhotos(formData));
+        break;
+      default:
+        break;
     }
+    form.resetFields();
+  };
 
-    if (type === 'item') {
-      dispatch(homeActions.downloadChecklistItemsTemplate());
-    }
-
-    if (type === 'user') {
-      dispatch(homeActions.downloadUserTemplate());
-    }
-
-    if (type === 'shop') {
-      dispatch(homeActions.downloadShopTemplate());
+  const downloadTemplate = () => {
+    switch (optionValue) {
+      case 'stocks':
+        dispatch(downloadActions.downloadStockTemplate());
+        break;
+      case 'checklists':
+        dispatch(downloadActions.downloadCheckListTemplate());
+        break;
+      case 'checklist_items':
+        dispatch(downloadActions.downloadChecklistItemsTemplate());
+        break;
+      case 'users':
+        dispatch(downloadActions.downloadUserTemplate());
+        break;
+      case 'shops':
+        dispatch(downloadActions.downloadShopTemplate());
+        break;
+      default:
+        break;
     }
   };
 
@@ -103,258 +117,72 @@ const UploadLayout = ({ dispatch }) => {
     <Row>
       <Col span={24}>
         <Card title="Upload" bordered={false} style={{ width: '100%' }}>
-          <Row>
-            <Col span={4}>
-              <p>Upload users</p>
-            </Col>
-            <Col span={8}>
+          <Form
+            {...layout}
+            name="upload-form"
+            initialValues={{ option: 'full' }}
+            onFinish={onFinish}
+            form={form}
+          >
+            <Form.Item
+              name="option"
+              label="Option"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Select
+                placeholder="Select a option you want to upload data"
+                allowClear
+                onChange={onChangeOption}
+              >
+                <Option value="full">Full</Option>
+                <Option value="checklists">Checklists</Option>
+                <Option value="checklist_items">Checklist Items</Option>
+                <Option value="photos">Photos</Option>
+                <Option value="stocks">Stocks</Option>
+                <Option value="shops">Shops</Option>
+                <Option value="users">Users</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="files"
+              label="Upload"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
               <Upload
-                onRemove={file => {
-                  const index = userList.indexOf(file);
-                  const newFileList = userList.slice();
-                  newFileList.splice(index, 1);
-                  setUserList(newFileList);
-                }}
-                beforeUpload={file => {
-                  setUserList([...userList, file]);
-                  return false;
-                }}
-                fileList={userList}
-              >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
-              </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('user')}
-                disabled={userList.length === 0}
-                loading={userListUploading}
-              >
-                {userListUploading ? 'Uploading' : 'Start Upload'}
-              </Button>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleTemplate('user')}
-                loading={userListUploading}
-              >
-                {'Template'}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <p>Upload shops</p>
-            </Col>
-            <Col span={8}>
-              <Upload
-                onRemove={file => {
-                  const index = shopList.indexOf(file);
-                  const newFileList = shopList.slice();
-                  newFileList.splice(index, 1);
-                  setShopList(newFileList);
-                }}
-                beforeUpload={file => {
-                  setShopList([...shopList, file]);
-                  return false;
-                }}
-                fileList={shopList}
-              >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
-              </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('shop')}
-                disabled={shopList.length === 0}
-                loading={shopListUploading}
-              >
-                {shopListUploading ? 'Uploading' : 'Start Upload'}
-              </Button>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleTemplate('shop')}
-                loading={shopListUploading}
-              >
-                {'Template'}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <p>Upload stock</p>
-            </Col>
-            <Col span={8}>
-              <Upload
-                onRemove={file => {
-                  const index = stockList.indexOf(file);
-                  const newFileList = stockList.slice();
-                  newFileList.splice(index, 1);
-                  setStockList(newFileList);
-                }}
-                beforeUpload={file => {
-                  setStockList([...stockList, file]);
-                  return false;
-                }}
-                fileList={stockList}
-              >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
-              </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('stock')}
-                disabled={stockList.length === 0}
-                loading={stockUploading}
-              >
-                {stockUploading ? 'Uploading' : 'Start Upload'}
-              </Button>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleTemplate('stock')}
-                loading={stockUploading}
-              >
-                {'Template'}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <p>Upload checklist</p>
-            </Col>
-            <Col span={8}>
-              <Upload
-                onRemove={file => {
-                  const index = checkList.indexOf(file);
-                  const newFileList = checkList.slice();
-                  newFileList.splice(index, 1);
-                  setCheckList(newFileList);
-                }}
-                beforeUpload={file => {
-                  setCheckList([...checkList, file]);
-                  return false;
-                }}
-                fileList={checkList}
-              >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
-              </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('checklist')}
-                disabled={checkList.length === 0}
-                loading={checkListUploading}
-              >
-                {checkListUploading ? 'Uploading' : 'Start Upload'}
-              </Button>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleTemplate('checklist')}
-                loading={checkListUploading}
-              >
-                {'Template'}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <p>Upload checklist items</p>
-            </Col>
-            <Col span={8}>
-              <Upload
-                onRemove={file => {
-                  const index = itemList.indexOf(file);
-                  const newFileList = itemList.slice();
-                  newFileList.splice(index, 1);
-                  setItemList(newFileList);
-                }}
-                beforeUpload={file => {
-                  setItemList([...itemList, file]);
-                  return false;
-                }}
-                fileList={itemList}
-              >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
-              </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('item')}
-                disabled={itemList.length === 0}
-                loading={itemListUploading}
-              >
-                {itemListUploading ? 'Uploading' : 'Start Upload'}
-              </Button>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleTemplate('item')}
-                loading={itemListUploading}
-              >
-                {'Template'}
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <p>Upload photos</p>
-            </Col>
-            <Col span={8}>
-              <Upload
-                onRemove={file => {
-                  const index = photoList.indexOf(file);
-                  const newFileList = photoList.slice();
-                  newFileList.splice(index, 1);
-                  setPhotoList(newFileList);
-                }}
-                beforeUpload={(file, fileList) => {
-                  const newList = photoList.concat(fileList);
-                  setPhotoList(newList);
-                  return false;
-                }}
-                fileList={photoList}
-                directory
+                name="logo"
                 listType="picture"
+                className="upload-list-inline"
+                beforeUpload={file => {
+                  setFiles([...files, file]);
+                  return false;
+                }}
+                directory={directory}
+                accept={acceptType}
               >
-                <Button block>
-                  <UploadOutlined /> Select file
-                </Button>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
-            </Col>
-            <Col span={3}>
-              <Button
-                type="primary"
-                onClick={() => handleUpload('photos')}
-                disabled={photoList.length === 0}
-                loading={photoListUploading}
-              >
-                {photoListUploading ? 'Uploading' : 'Start Upload'}
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
+                Submit
               </Button>
-            </Col>
-          </Row>
+              {!hideTemplate && (
+                <Button type="primary" onClick={downloadTemplate}>
+                  Template
+                </Button>
+              )}
+            </Form.Item>
+          </Form>
         </Card>
       </Col>
     </Row>

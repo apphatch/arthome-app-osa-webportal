@@ -3,7 +3,7 @@ import React from 'react';
 import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
 import { connect } from 'react-redux';
-import downloadActions from './redux/download.actions';
+import { downloadActions } from './redux/actions';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Row, Col, Card, Table, Button, Modal, Form, Input, Space } from 'antd';
 
 import { connect } from 'react-redux';
-import homeActions from './redux/actions';
+import { homeActions } from './redux/actions';
 import authActions from '../auth/redux/actions';
 
 const layout = {

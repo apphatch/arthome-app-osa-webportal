@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Row, Col, Card, Table, Tag, Typography, Input, Image, Space } from 'antd';
 
 import { connect } from 'react-redux';
-import homeActions from './redux/actions';
+import { homeActions } from './redux/actions';
 const url = process.env.REACT_APP_API_URL;
 
 const { Text } = Typography;
@@ -127,7 +127,8 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       </Row>
                     );
                   },
-                  rowExpandable: record => record.shop_checkout_photos !== null && record.shop_checkout_photos.length > 0,
+                  rowExpandable: record =>
+                    record.shop_checkout_photos !== null && record.shop_checkout_photos.length > 0,
                 }}
                 dataSource={listCheckInCheckOut}
               />
