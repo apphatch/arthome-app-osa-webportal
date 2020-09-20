@@ -67,7 +67,7 @@ const uploadFull = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_osa_shops', data)
+      .post('io/import_osa_full', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
