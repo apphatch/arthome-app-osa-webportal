@@ -106,7 +106,7 @@ const uploadPhotos = data => {
 const uploadUsers = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
-    return api()
+    return api('multipart/form-data')
       .post('users/import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
