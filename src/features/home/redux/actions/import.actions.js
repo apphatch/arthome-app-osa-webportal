@@ -7,7 +7,7 @@ const uploadStocks = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('stocks/import', data)
+      .post('io/import_osa_stocks', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -27,7 +27,7 @@ const uploadChecklists = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('checklists/import', data)
+      .post('io/import_osa_checklists', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -47,7 +47,7 @@ const uploadChecklistItems = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('checklist_items/import', data)
+      .post('io/import_osa_checklist_items', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -67,7 +67,7 @@ const uploadFull = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('shops/import_osa', data)
+      .post('io/import_osa_full', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -106,8 +106,8 @@ const uploadPhotos = data => {
 const uploadUsers = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
-    return api('multipart/form-data')
-      .post('users/import', data)
+    return api()
+      .post('io/import_osa_users', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
