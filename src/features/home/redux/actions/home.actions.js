@@ -103,6 +103,9 @@ const getCheckInCheckOut = () => {
           data.key = data.id;
           return data;
         });
+        res.data.sort(function(a, b) {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
         dispatch(success(GET_LIST_CHECKIN_CHECKOUT_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);

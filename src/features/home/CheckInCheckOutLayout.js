@@ -37,11 +37,6 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
               <Table
                 columns={[
                   {
-                    title: '#',
-                    dataIndex: 'id',
-                    key: 'id',
-                  },
-                  {
                     title: 'User',
                     dataIndex: 'user',
                     key: 'user',
@@ -64,15 +59,15 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                   },
                   {
                     title: 'Time',
-                    dataIndex: 'time',
-                    key: 'time',
+                    dataIndex: 'created_at',
+                    key: 'created_at',
                     render: (v, record) => {
                       const timeCheckin = moment(v)
                         .utc()
                         .format('DD-MM-YYYY HH:mm:ss');
                       const timeCheckout =
-                        record.user_checkout !== null && record.user_checkout.time !== null
-                          ? moment(record.user_checkout.time)
+                        record.user_checkout !== null && record.user_checkout.created_at !== null
+                          ? moment(record.user_checkout.created_at)
                               .utc()
                               .format('DD-MM-YYYY HH:mm:ss')
                           : '';
