@@ -5,10 +5,13 @@ import authActions from '../../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../../common/download';
 
 const downloadOOS = options => {
+  console.log(options);
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_oos', options)
+      .get(
+        `io/export_osa_oos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
@@ -32,7 +35,9 @@ const downloadSOS = options => {
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_sos', options)
+      .get(
+        `io/export_osa_sos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
@@ -55,7 +60,9 @@ const downloadWeekend = options => {
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_weekend', options)
+      .get(
+        `io/export_osa_weekend?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
@@ -78,7 +85,9 @@ const downloadPromotions = options => {
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_promotions', options)
+      .get(
+        `io/export_osa_promotions?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
@@ -101,7 +110,9 @@ const downloadRental = options => {
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_rental', options)
+      .get(
+        `io/export_osa_rental?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
@@ -124,7 +135,9 @@ const downloadNpd = options => {
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
-      .get('io/export_osa_npd', options)
+      .get(
+        `io/export_osa_npd?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+      )
       .then(res => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
