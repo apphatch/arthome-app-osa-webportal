@@ -10,7 +10,7 @@ const downloadOOS = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_oos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_oos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -36,7 +36,7 @@ const downloadSOS = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_sos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_sos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -61,7 +61,7 @@ const downloadWeekend = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_weekend?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_weekend?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -86,7 +86,7 @@ const downloadPromotions = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_promotions?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_promotions?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -111,7 +111,7 @@ const downloadRental = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_rental?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_rental?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -136,7 +136,7 @@ const downloadNpd = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_npd?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweak}`,
+        `io/export_osa_npd?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweak=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
