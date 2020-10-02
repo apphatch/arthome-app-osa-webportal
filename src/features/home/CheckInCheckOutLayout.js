@@ -85,7 +85,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     key: 'photos',
                     render: (photo, record) => {
                       return (
-                        <>
+                        <Space>
                           <Image
                             src={`${url}${photo[0].image}`}
                             height={90}
@@ -101,7 +101,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                                 preview={true}
                               />
                             )}
-                        </>
+                        </Space>
                       );
                     },
                   },
