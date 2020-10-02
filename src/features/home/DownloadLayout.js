@@ -77,11 +77,7 @@ const DownloadLayout = ({ dispatch, user }) => {
                 <Option value="npd">npd</Option>
               </Select>
             </Form.Item>
-            <Form.Item
-              name="date"
-              label="Date"
-              rules={[{ type: 'array', required: true, message: 'Please select time!' }]}
-            >
+            <Form.Item name="date" label="Date" rules={[{ type: 'array', required: false }]}>
               <RangePicker style={{ width: '100%' }} format="DD-MM-YYYY" />
             </Form.Item>
             <Form.Item
@@ -89,7 +85,7 @@ const DownloadLayout = ({ dispatch, user }) => {
               label="Yearweek"
               rules={[
                 {
-                  required: true,
+                  required: false,
                 },
               ]}
             >
