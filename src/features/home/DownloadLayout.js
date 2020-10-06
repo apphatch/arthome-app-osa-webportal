@@ -20,11 +20,12 @@ const DownloadLayout = ({ dispatch, user }) => {
   const [form] = Form.useForm();
 
   const onFinish = values => {
+    console.log(values);
     const formData = {
       user_id: user.user_id,
-      date_from: values.date[0],
-      date_to: values.date[1],
-      yearweek: values.yearweek,
+      date_from: values.date ? values.date[0] : '',
+      date_to: values.date ? values.date[1] : '',
+      yearweek: values.yearweek ? values.yearweek : '',
     };
     switch (values.option) {
       case 'oos':
