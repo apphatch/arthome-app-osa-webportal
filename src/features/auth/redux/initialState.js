@@ -1,9 +1,8 @@
 const initialState = {
   headers: {
     Authorization: '',
-    'X-CSRF-Token': ''
   },
-  user: {}
+  user: {},
 };
 
 export default initialState;

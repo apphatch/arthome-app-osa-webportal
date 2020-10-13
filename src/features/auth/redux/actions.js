@@ -20,7 +20,6 @@ const login = data => {
           user: res.data,
           headers: {
             Authorization: res.headers['authorization'],
-            'X-CSRF-Token': res.headers['x-csrf-token'],
           },
         };
         dispatch(success(AUTH_LOGIN_SUCCESS, data));
