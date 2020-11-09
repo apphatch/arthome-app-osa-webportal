@@ -5,7 +5,6 @@ import authActions from '../../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../../common/download';
 
 const downloadOOS = options => {
-  console.log(options);
   return dispatch => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
@@ -93,6 +92,31 @@ const downloadPromotions = options => {
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'promotions', 'xls');
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status } = error.response;
+          dispatch(failure(DOWNLOAD_FAILURE, error.response));
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const downloadTracking = options => {
+  return dispatch => {
+    dispatch(request(DOWNLOAD_REQUEST));
+    return api()
+      .get(
+        `io/export_osa_checkin_checkout?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+      )
+      .then(res => {
+        console.log(res);
+        dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'tracking', 'xls');
       })
       .catch(error => {
         if (error.response) {
@@ -273,6 +297,7 @@ const downloadActions = {
   downloadPromotions,
   downloadRental,
   downloadNpd,
+  downloadTracking,
   downloadUserTemplate,
   downloadStockTemplate,
   downloadCheckListTemplate,

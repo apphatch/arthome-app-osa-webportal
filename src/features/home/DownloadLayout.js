@@ -46,6 +46,9 @@ const DownloadLayout = ({ dispatch, user }) => {
       case 'npd':
         dispatch(downloadActions.downloadNpd(formData));
         break;
+      case 'tracking':
+        dispatch(downloadActions.downloadTracking(formData));
+        break;
       default:
         break;
     }
@@ -76,6 +79,7 @@ const DownloadLayout = ({ dispatch, user }) => {
                 <Option value="promotions">promotions</Option>
                 <Option value="rental">rental</Option>
                 <Option value="npd">npd</Option>
+                <Option value="tracking">tracking</Option>
               </Select>
             </Form.Item>
             <Form.Item name="date" label="Date" rules={[{ type: 'array', required: false }]}>
