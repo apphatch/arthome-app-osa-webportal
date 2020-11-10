@@ -9,7 +9,7 @@ const downloadOOS = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_oos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_oos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -35,7 +35,7 @@ const downloadSOS = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_sos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_sos?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -60,7 +60,7 @@ const downloadWeekend = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_weekend?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_weekend?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -85,7 +85,7 @@ const downloadPromotions = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_promotions?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_promotions?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -110,7 +110,7 @@ const downloadTracking = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_checkin_checkout?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_checkin_checkout?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -135,7 +135,7 @@ const downloadRental = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_rental?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_rental?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
@@ -160,7 +160,7 @@ const downloadNpd = options => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
-        `io/export_osa_npd?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
+        `io/export_npd?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
       .then(res => {
         console.log(res);
