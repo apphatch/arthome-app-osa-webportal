@@ -7,7 +7,7 @@ const uploadStocks = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_stocks', data)
+      .post('io/stock_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -27,7 +27,7 @@ const uploadChecklists = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_checklists', data)
+      .post('io/checklist_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -47,7 +47,7 @@ const uploadChecklistItems = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_checklist_items', data)
+      .post('io/checklist_item_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -67,7 +67,7 @@ const uploadFull = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_full', data)
+      .post('io/master_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -87,7 +87,7 @@ const uploadPhotos = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api('multipart/form-data')
-      .post('io/import_photos', data)
+      .post('io/photo_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -107,7 +107,7 @@ const uploadUsers = data => {
   return dispatch => {
     dispatch(request(IMPORT_REQUEST));
     return api()
-      .post('io/import_users', data)
+      .post('io/user_import', data)
       .then(res => {
         dispatch(success(IMPORT_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
