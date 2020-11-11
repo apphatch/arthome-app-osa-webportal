@@ -1,7 +1,7 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
-import { Row, Col, Card, Table, Tag, Typography, Input, Image, Space } from 'antd';
+import { Row, Col, Card, Table, Typography, Input, Image, Space } from 'antd';
 
 import { connect } from 'react-redux';
 import { homeActions } from './redux/actions';
@@ -62,14 +62,16 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     dataIndex: 'created_at',
                     key: 'created_at',
                     render: (v, record) => {
-                      const timeCheckin = moment(v)
-                        .utc()
-                        .format('DD-MM-YYYY HH:mm:ss');
+                      const timeCheckin = moment
+                        .utc(v)
+                        .tz(moment.tz.guess(true))
+                        .format('DD-MM-YYYY hh:mm:ss');
                       const timeCheckout =
                         record.user_checkout !== null && record.user_checkout.created_at !== null
-                          ? moment(record.user_checkout.created_at)
-                              .utc()
-                              .format('DD-MM-YYYY HH:mm:ss')
+                          ? moment
+                              .utc(record.user_checkout.created_at)
+                              .tz(moment.tz.guess(true))
+                              .format('DD-MM-YYYY hh:mm:ss')
                           : '';
                       return (
                         <Space direction="vertical">
