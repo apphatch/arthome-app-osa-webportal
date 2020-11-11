@@ -13,8 +13,6 @@ const { Search } = Input;
 const CheckInCheckOutLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
 
-  console.log(listCheckInCheckOut);
-
   React.useEffect(() => {
     dispatch(homeActions.getCheckInCheckOut());
   }, [dispatch]);
@@ -43,6 +41,17 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     render: u => {
                       return <Text>{u.name}</Text>;
                     },
+                    filters:
+                      listCheckInCheckOut.length > 0 &&
+                      listCheckInCheckOut.map(value => {
+                        return {
+                          text: value.user.name,
+                          value: value.user.name,
+                        };
+                      }),
+                    onFilter: (value, record) => {
+                      return record.user.name === value;
+                    },
                   },
                   {
                     title: 'Shop',
@@ -55,6 +64,17 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                           <Text>{data.importing_id}</Text>
                         </Space>
                       );
+                    },
+                    filters:
+                      listCheckInCheckOut.length > 0 &&
+                      listCheckInCheckOut.map(value => {
+                        return {
+                          text: value.shop.name,
+                          value: value.shop.name,
+                        };
+                      }),
+                    onFilter: (value, record) => {
+                      return record.shop.name === value;
                     },
                   },
                   {
@@ -79,6 +99,27 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                           <Text>{`Checkout: ${timeCheckout}`}</Text>
                         </Space>
                       );
+                    },
+                    filters:
+                      listCheckInCheckOut.length > 0 &&
+                      listCheckInCheckOut.map(value => {
+                        return {
+                          text: moment
+                            .utc(value.created_at)
+                            .tz(moment.tz.guess(true))
+                            .format('DD-MM-YYYY HH:mm:ss'),
+                          value: moment
+                            .utc(value.created_at)
+                            .tz(moment.tz.guess(true))
+                            .format('DD-MM-YYYY HH:mm:ss'),
+                        };
+                      }),
+                    onFilter: (value, record) => {
+                      const checkin = moment
+                        .utc(record.created_at)
+                        .tz(moment.tz.guess(true))
+                        .format('DD-MM-YYYY HH:mm:ss');
+                      return checkin === value;
                     },
                   },
                   {
