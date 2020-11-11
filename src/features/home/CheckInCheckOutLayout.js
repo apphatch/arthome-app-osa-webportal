@@ -65,13 +65,13 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       const timeCheckin = moment
                         .utc(v)
                         .tz(moment.tz.guess(true))
-                        .format('DD-MM-YYYY hh:mm:ss');
+                        .format('DD-MM-YYYY HH:mm:ss');
                       const timeCheckout =
                         record.user_checkout !== null && record.user_checkout.created_at !== null
                           ? moment
                               .utc(record.user_checkout.created_at)
                               .tz(moment.tz.guess(true))
-                              .format('DD-MM-YYYY hh:mm:ss')
+                              .format('DD-MM-YYYY HH:mm:ss')
                           : '';
                       return (
                         <Space direction="vertical">
@@ -88,12 +88,15 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     render: (photo, record) => {
                       return (
                         <Space>
-                          <Image
-                            src={`${url}${photo[0].image}`}
-                            height={90}
-                            width={60}
-                            preview={true}
-                          />
+                          {photo.length > 0 && (
+                            <Image
+                              src={`${url}${photo[0].image}`}
+                              height={90}
+                              width={60}
+                              preview={true}
+                            />
+                          )}
+
                           {record.user_checkout.photos &&
                             record.user_checkout.photos.length > 0 && (
                               <Image
