@@ -42,6 +42,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       return <Text>{u.name}</Text>;
                     },
                     filters:
+                      listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
                       listCheckInCheckOut.map(value => {
                         return {
@@ -66,6 +67,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       );
                     },
                     filters:
+                      listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
                       listCheckInCheckOut.map(value => {
                         return {
@@ -101,6 +103,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       );
                     },
                     filters:
+                      listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
                       listCheckInCheckOut.map(value => {
                         return {
@@ -176,7 +179,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                   rowExpandable: record =>
                     record.shop_checkout_photos !== null && record.shop_checkout_photos.length > 0,
                 }}
-                dataSource={listCheckInCheckOut}
+                dataSource={listCheckInCheckOut || []}
               />
             </Col>
           </Row>
