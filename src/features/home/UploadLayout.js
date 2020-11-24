@@ -24,7 +24,7 @@ const UploadLayout = ({ dispatch }) => {
   const [optionValue, setOptionValue] = React.useState('full');
   const [files, setFiles] = React.useState([]);
 
-  const normFile = e => {
+  const normFile = (e) => {
     console.log('Upload event:', e);
 
     if (Array.isArray(e)) {
@@ -34,7 +34,7 @@ const UploadLayout = ({ dispatch }) => {
     return e && e.fileList;
   };
 
-  const onChangeOption = value => {
+  const onChangeOption = (value) => {
     setOptionValue(value);
     switch (value) {
       case 'photos': {
@@ -57,7 +57,7 @@ const UploadLayout = ({ dispatch }) => {
     }
   };
 
-  const onFinish = values => {
+  const onFinish = (values) => {
     const formData = new FormData();
     values.files.forEach((file, i) => {
       formData.append('files[]', file.originFileObj);
@@ -67,21 +67,21 @@ const UploadLayout = ({ dispatch }) => {
       case 'full':
         dispatch(importActions.uploadFull(formData));
         break;
-      case 'stocks':
-        dispatch(importActions.uploadStocks(formData));
-        break;
-      case 'checklists':
-        dispatch(importActions.uploadChecklists(formData));
-        break;
-      case 'checklist_items':
-        dispatch(importActions.uploadChecklistItems(formData));
-        break;
-      case 'users':
-        dispatch(importActions.uploadUsers(formData));
-        break;
-      case 'shops':
-        dispatch(importActions.uploadShops(formData));
-        break;
+      // case 'stocks':
+      //   dispatch(importActions.uploadStocks(formData));
+      //   break;
+      // case 'checklists':
+      //   dispatch(importActions.uploadChecklists(formData));
+      //   break;
+      // case 'checklist_items':
+      //   dispatch(importActions.uploadChecklistItems(formData));
+      //   break;
+      // case 'users':
+      //   dispatch(importActions.uploadUsers(formData));
+      //   break;
+      // case 'shops':
+      //   dispatch(importActions.uploadShops(formData));
+      //   break;
       case 'photos':
         dispatch(importActions.uploadPhotos(formData));
         break;
@@ -139,12 +139,12 @@ const UploadLayout = ({ dispatch }) => {
                 onChange={onChangeOption}
               >
                 <Option value="full">Full</Option>
-                <Option value="checklists">Checklists</Option>
-                <Option value="checklist_items">Checklist Items</Option>
+                {/* <Option value="checklists">Checklists</Option>
+                <Option value="checklist_items">Checklist Items</Option> */}
                 <Option value="photos">Photos</Option>
-                <Option value="stocks">Stocks</Option>
+                {/* <Option value="stocks">Stocks</Option>
                 <Option value="shops">Shops</Option>
-                <Option value="users">Users</Option>
+                <Option value="users">Users</Option> */}
               </Select>
             </Form.Item>
             <Form.Item
@@ -162,7 +162,7 @@ const UploadLayout = ({ dispatch }) => {
                 name="logo"
                 listType="picture"
                 className="upload-list-inline"
-                beforeUpload={file => {
+                beforeUpload={(file) => {
                   setFiles([...files, file]);
                   return false;
                 }}
@@ -189,7 +189,7 @@ const UploadLayout = ({ dispatch }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     home: state.home,
   };

@@ -14,16 +14,16 @@ import {
 import authActions from '../../../auth/redux/actions';
 
 const getListUsers = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(GET_LIST_USERS_REQUEST));
     return api()
       .get('users')
-      .then(res => {
+      .then((res) => {
         dispatch(success(GET_LIST_USERS_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         dispatch(failure(GET_LIST_USERS_FAILURE, error.response));
         if (status === 401 || status === 500) {
@@ -34,16 +34,16 @@ const getListUsers = () => {
 };
 
 const editUser = (userId, data) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(EDIT_USER_REQUEST));
     return api()
       .put('users/' + userId, data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         dispatch(failure(EDIT_USER_FAILURE, error.response));
         if (status === 401 || status === 500) {
@@ -53,17 +53,17 @@ const editUser = (userId, data) => {
   };
 };
 
-const lockUser = userId => {
-  return dispatch => {
+const lockUser = (userId) => {
+  return (dispatch) => {
     dispatch(request(EDIT_USER_REQUEST));
     return api()
       .post(`users/${userId}/lock`, {})
-      .then(res => {
+      .then((res) => {
         dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         dispatch(failure(EDIT_USER_FAILURE, error.response));
         if (status === 401 || status === 500) {
@@ -73,17 +73,17 @@ const lockUser = userId => {
   };
 };
 
-const unlockUser = userId => {
-  return dispatch => {
+const unlockUser = (userId) => {
+  return (dispatch) => {
     dispatch(request(EDIT_USER_REQUEST));
     return api()
       .post(`users/${userId}/unlock`, {})
-      .then(res => {
+      .then((res) => {
         dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         dispatch(failure(EDIT_USER_FAILURE, error.response));
         if (status === 401 || status === 500) {
@@ -94,23 +94,23 @@ const unlockUser = userId => {
 };
 
 const getCheckInCheckOut = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(GET_LIST_CHECKIN_CHECKOUT_REQUEST));
     return api()
       .get('checkin_checkouts')
-      .then(res => {
-        res.data = res.data.map(data => {
+      .then((res) => {
+        res.data = res.data.map((data) => {
           data.key = data.id;
           return data;
         });
-        res.data.sort(function(a, b) {
+        res.data.sort(function (a, b) {
           return new Date(b.created_at) - new Date(a.created_at);
         });
         dispatch(success(GET_LIST_CHECKIN_CHECKOUT_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         dispatch(failure(GET_LIST_CHECKIN_CHECKOUT_FAILURE, error.response));
         if (status === 401 || status === 500) {

@@ -25,50 +25,11 @@ const Dashboard = ({ dispatch, home }) => {
     { name: ['importing_id'], value: '' },
   ]);
 
-  const columns = [
-    {
-      title: 'Username',
-      dataIndex: 'username',
-      key: 'username',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Importing ID',
-      dataIndex: 'importing_id',
-      key: 'importing_id',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          {record.locked ? (
-            <Button type="link" onClick={() => unlockUser(record.id)}>
-              Unlock
-            </Button>
-          ) : (
-            <Button type="link" onClick={() => lockUser(record.id)}>
-              Lock
-            </Button>
-          )}
-
-          <Button type="link" onClick={() => showModal(record)}>
-            Edit
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
   React.useEffect(() => {
     dispatch(homeActions.getListUsers());
   }, [dispatch]);
 
-  const showModal = data => {
+  const showModal = (data) => {
     setVisible(true);
     form.resetFields();
     if (data) {
@@ -87,35 +48,39 @@ const Dashboard = ({ dispatch, home }) => {
     }
   };
 
-  const handleCancel = e => {
+  const handleCancel = (e) => {
     setVisible(false);
   };
 
-  const onAddUser = values => {
-    dispatch(authActions.register(values)).then(res => {
+  const onAddUser = (values) => {
+    dispatch(authActions.register(values)).then((res) => {
       handleCancel();
       dispatch(homeActions.getListUsers());
     });
   };
 
-  const onEditUser = values => {
-    const newValues = _.pickBy(values, v => v !== '');
-    dispatch(homeActions.editUser(userId, newValues)).then(res => {
+  const onEditUser = (values) => {
+    const newValues = _.pickBy(values, (v) => v !== '');
+    dispatch(homeActions.editUser(userId, newValues)).then((res) => {
       handleCancel();
       dispatch(homeActions.getListUsers());
     });
   };
 
-  const lockUser = userId => {
-    dispatch(homeActions.lockUser(userId)).then(res => {
+  const lockUser = (userId) => {
+    dispatch(homeActions.lockUser(userId)).then((res) => {
       dispatch(homeActions.getListUsers());
     });
   };
 
-  const unlockUser = userId => {
-    dispatch(homeActions.unlockUser(userId)).then(res => {
+  const unlockUser = (userId) => {
+    dispatch(homeActions.unlockUser(userId)).then((res) => {
       dispatch(homeActions.getListUsers());
     });
+  };
+
+  const filters = (arr) => {
+    return _.uniqBy(arr, 'text');
   };
 
   return (
@@ -131,7 +96,90 @@ const Dashboard = ({ dispatch, home }) => {
             </Button>
           }
         >
-          <Table columns={columns} dataSource={home.users} />
+          <Table
+            columns={[
+              {
+                title: 'Username',
+                dataIndex: 'username',
+                key: 'username',
+                filters:
+                  home.users &&
+                  home.users.length > 0 &&
+                  filters(
+                    home.users.map((value) => {
+                      return {
+                        text: value.username,
+                        value: value.username,
+                      };
+                    }),
+                  ),
+                onFilter: (value, record) => {
+                  return record.username === value;
+                },
+              },
+              {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+                filters:
+                  home.users &&
+                  home.users.length > 0 &&
+                  filters(
+                    home.users.map((value) => {
+                      return {
+                        text: value.name,
+                        value: value.name,
+                      };
+                    }),
+                  ),
+                onFilter: (value, record) => {
+                  return record.name === value;
+                },
+              },
+              {
+                title: 'Importing ID',
+                dataIndex: 'importing_id',
+                key: 'importing_id',
+                filters:
+                  home.users &&
+                  home.users.length > 0 &&
+                  filters(
+                    home.users.map((value) => {
+                      return {
+                        text: value.importing_id,
+                        value: value.importing_id,
+                      };
+                    }),
+                  ),
+                onFilter: (value, record) => {
+                  return record.importing_id === value;
+                },
+              },
+              {
+                title: 'Action',
+                key: 'action',
+                render: (text, record) => (
+                  <Space size="middle">
+                    {record.locked ? (
+                      <Button type="link" onClick={() => unlockUser(record.id)}>
+                        Unlock
+                      </Button>
+                    ) : (
+                      <Button type="link" onClick={() => lockUser(record.id)}>
+                        Lock
+                      </Button>
+                    )}
+
+                    <Button type="link" onClick={() => showModal(record)}>
+                      Edit
+                    </Button>
+                  </Space>
+                ),
+              },
+            ]}
+            dataSource={home.users || []}
+            rowKey="id"
+          />
           <Modal
             title={titleForm}
             visible={visible}
@@ -141,7 +189,7 @@ const Dashboard = ({ dispatch, home }) => {
             onOk={() => {
               form
                 .validateFields()
-                .then(values => {
+                .then((values) => {
                   if (titleForm === 'Add User') {
                     form.resetFields();
                     onAddUser(values);
@@ -149,7 +197,7 @@ const Dashboard = ({ dispatch, home }) => {
                     onEditUser(values);
                   }
                 })
-                .catch(info => {
+                .catch((info) => {
                   console.log('Validate Failed:', info);
                 });
             }}
@@ -203,7 +251,7 @@ const Dashboard = ({ dispatch, home }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     home: state.home,
   };

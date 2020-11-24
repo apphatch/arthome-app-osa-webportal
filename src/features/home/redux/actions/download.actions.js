@@ -4,20 +4,20 @@ import { DOWNLOAD_REQUEST, DOWNLOAD_SUCCESS, DOWNLOAD_FAILURE } from '../constan
 import authActions from '../../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../../common/download';
 
-const downloadOOS = options => {
-  return dispatch => {
+const downloadOOS = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/oos_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'oos', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -30,20 +30,20 @@ const downloadOOS = options => {
   };
 };
 
-const downloadSOS = options => {
-  return dispatch => {
+const downloadSOS = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/sos_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'sos', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -55,20 +55,20 @@ const downloadSOS = options => {
   };
 };
 
-const downloadWeekend = options => {
-  return dispatch => {
+const downloadWeekend = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/osa_weekend_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'weekend', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -80,20 +80,20 @@ const downloadWeekend = options => {
   };
 };
 
-const downloadPromotions = options => {
-  return dispatch => {
+const downloadPromotions = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/promotion_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'promotions', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -105,20 +105,20 @@ const downloadPromotions = options => {
   };
 };
 
-const downloadTracking = options => {
-  return dispatch => {
+const downloadTracking = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/checkin_checkout_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'tracking', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -130,20 +130,20 @@ const downloadTracking = options => {
   };
 };
 
-const downloadRental = options => {
-  return dispatch => {
+const downloadRental = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/rental_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'rental', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -155,20 +155,20 @@ const downloadRental = options => {
   };
 };
 
-const downloadNpd = options => {
-  return dispatch => {
+const downloadNpd = (options) => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get(
         `io/npd_export?date_from=${options.date_from}&date_to=${options.date_to}&user_id=${options.user_id}&yearweek=${options.yearweek}`,
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'npd', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -181,16 +181,16 @@ const downloadNpd = options => {
 };
 
 const downloadUserTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get('io/user_import/template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'user_template', 'xls');
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -203,16 +203,16 @@ const downloadUserTemplate = () => {
 };
 
 const downloadStockTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get('io/stock_import/template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'stock_template', 'xls');
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -225,16 +225,16 @@ const downloadStockTemplate = () => {
 };
 
 const downloadCheckListTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get('io/checklist_import/template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_template', 'xls');
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -247,16 +247,16 @@ const downloadCheckListTemplate = () => {
 };
 
 const downloadChecklistItemsTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get('io/checklist_item_import/template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_item_template', 'xls');
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));
@@ -269,16 +269,16 @@ const downloadChecklistItemsTemplate = () => {
 };
 
 const downloadShopTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(request(DOWNLOAD_REQUEST));
     return api()
       .get('io/shop_import/template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'shop_template', 'xls');
         dispatch(success(DOWNLOAD_SUCCESS, { message: 'Download success' }));
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           dispatch(failure(DOWNLOAD_FAILURE, error.response));

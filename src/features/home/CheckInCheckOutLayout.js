@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment-timezone';
+import _ from 'lodash';
 
 import { Row, Col, Card, Table, Typography, Input, Image, Space } from 'antd';
 
@@ -10,15 +11,50 @@ const url = process.env.REACT_APP_API_URL;
 const { Text } = Typography;
 const { Search } = Input;
 
+const filterDataWithTime = (datas, value, fields) => {
+  let filteredData = [];
+  fields.forEach((field) => {
+    if (filteredData.length === 0) {
+      filteredData = datas.filter((data) => {
+        if (typeof data[field] === 'object') {
+          return data[field].created_at
+            ? moment
+                .utc(data[field].created_at)
+                .tz(moment.tz.guess(true))
+                .format('DD-MM-YYYY HH:mm:ss')
+                .includes(value.toLowerCase())
+            : '';
+        }
+        return data[field]
+          ? moment
+              .utc(data[field])
+              .tz(moment.tz.guess(true))
+              .format('DD-MM-YYYY HH:mm:ss')
+              .includes(value.toLowerCase())
+          : '';
+      });
+    }
+  });
+
+  return filteredData;
+};
+
 const CheckInCheckOutLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
+
+  const [data, setData] = useState(listCheckInCheckOut);
 
   React.useEffect(() => {
     dispatch(homeActions.getCheckInCheckOut());
   }, [dispatch]);
 
-  const onSearch = value => {
-    console.log(value);
+  const filters = (arr) => {
+    return _.uniqBy(arr, 'text');
+  };
+
+  const onSearch = (value) => {
+    const newData = filterDataWithTime(listCheckInCheckOut, value, ['created_at', 'user_checkout']);
+    setData(newData);
   };
 
   return (
@@ -38,18 +74,20 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     title: 'User',
                     dataIndex: 'user',
                     key: 'user',
-                    render: u => {
+                    render: (u) => {
                       return <Text>{u.name}</Text>;
                     },
                     filters:
                       listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
-                      listCheckInCheckOut.map(value => {
-                        return {
-                          text: value.user.name,
-                          value: value.user.name,
-                        };
-                      }),
+                      filters(
+                        listCheckInCheckOut.map((value) => {
+                          return {
+                            text: value.user.name,
+                            value: value.user.name,
+                          };
+                        }),
+                      ),
                     onFilter: (value, record) => {
                       return record.user.name === value;
                     },
@@ -58,23 +96,25 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     title: 'Shop',
                     dataIndex: 'shop',
                     key: 'shop',
-                    render: data => {
+                    render: (data, record) => {
                       return (
                         <Space direction="vertical">
                           <Text>{data.name}</Text>
-                          <Text>{data.importing_id}</Text>
+                          <Text>{record.note}</Text>
                         </Space>
                       );
                     },
                     filters:
                       listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
-                      listCheckInCheckOut.map(value => {
-                        return {
-                          text: value.shop.name,
-                          value: value.shop.name,
-                        };
-                      }),
+                      filters(
+                        listCheckInCheckOut.map((value) => {
+                          return {
+                            text: value.shop.name,
+                            value: value.shop.name,
+                          };
+                        }),
+                      ),
                     onFilter: (value, record) => {
                       return record.shop.name === value;
                     },
@@ -105,23 +145,25 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     filters:
                       listCheckInCheckOut &&
                       listCheckInCheckOut.length > 0 &&
-                      listCheckInCheckOut.map(value => {
-                        return {
-                          text: moment
-                            .utc(value.created_at)
-                            .tz(moment.tz.guess(true))
-                            .format('DD-MM-YYYY HH:mm:ss'),
-                          value: moment
-                            .utc(value.created_at)
-                            .tz(moment.tz.guess(true))
-                            .format('DD-MM-YYYY HH:mm:ss'),
-                        };
-                      }),
+                      filters(
+                        listCheckInCheckOut.map((value) => {
+                          return {
+                            text: moment
+                              .utc(value.created_at)
+                              .tz(moment.tz.guess(true))
+                              .format('DD-MM-YYYY'),
+                            value: moment
+                              .utc(value.created_at)
+                              .tz(moment.tz.guess(true))
+                              .format('DD-MM-YYYY'),
+                          };
+                        }),
+                      ),
                     onFilter: (value, record) => {
                       const checkin = moment
                         .utc(record.created_at)
                         .tz(moment.tz.guess(true))
-                        .format('DD-MM-YYYY HH:mm:ss');
+                        .format('DD-MM-YYYY');
                       return checkin === value;
                     },
                   },
@@ -156,13 +198,13 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                   },
                 ]}
                 expandable={{
-                  expandedRowRender: record => {
+                  expandedRowRender: (record) => {
                     return (
                       <Row gutter={[10, 10]}>
                         {record.shop_checkout_photos !== null &&
                           record.shop_checkout_photos.length > 0 &&
                           record.shop_checkout_photos.map(
-                            photo =>
+                            (photo) =>
                               photo.path !== null && (
                                 <Col key={photo.id} span={4}>
                                   <Image
@@ -176,10 +218,10 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       </Row>
                     );
                   },
-                  rowExpandable: record =>
+                  rowExpandable: (record) =>
                     record.shop_checkout_photos !== null && record.shop_checkout_photos.length > 0,
                 }}
-                dataSource={listCheckInCheckOut || []}
+                dataSource={data || []}
               />
             </Col>
           </Row>
@@ -189,7 +231,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     home: state.home,
   };
