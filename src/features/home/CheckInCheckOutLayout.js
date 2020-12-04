@@ -2,59 +2,52 @@ import React, { useState } from 'react';
 import moment from 'moment-timezone';
 import _ from 'lodash';
 
-import { Row, Col, Card, Table, Typography, Input, Image, Space } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Table,
+  Typography,
+  Input,
+  Image,
+  Space,
+  Form,
+  Button,
+  DatePicker,
+} from 'antd';
 
 import { connect } from 'react-redux';
 import { homeActions } from './redux/actions';
 const url = process.env.REACT_APP_API_URL;
 
 const { Text } = Typography;
-const { Search } = Input;
-
-const filterDataWithTime = (datas, value, fields) => {
-  let filteredData = [];
-  fields.forEach((field) => {
-    if (filteredData.length === 0) {
-      filteredData = datas.filter((data) => {
-        if (typeof data[field] === 'object') {
-          return data[field].created_at
-            ? moment
-                .utc(data[field].created_at)
-                .tz(moment.tz.guess(true))
-                .format('DD-MM-YYYY HH:mm:ss')
-                .includes(value.toLowerCase())
-            : '';
-        }
-        return data[field]
-          ? moment
-              .utc(data[field])
-              .tz(moment.tz.guess(true))
-              .format('DD-MM-YYYY HH:mm:ss')
-              .includes(value.toLowerCase())
-          : '';
-      });
-    }
-  });
-
-  return filteredData;
-};
+const { RangePicker } = DatePicker;
 
 const CheckInCheckOutLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
+  const [form] = Form.useForm();
 
-  const [data, setData] = useState(listCheckInCheckOut);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   React.useEffect(() => {
-    dispatch(homeActions.getCheckInCheckOut());
-  }, [dispatch]);
+    dispatch(homeActions.getCheckInCheckOut(dateFrom, dateTo));
+  }, [dispatch, dateFrom, dateTo]);
 
   const filters = (arr) => {
     return _.uniqBy(arr, 'text');
   };
 
-  const onSearch = (value) => {
-    const newData = filterDataWithTime(listCheckInCheckOut, value, ['created_at', 'user_checkout']);
-    setData(newData);
+  const onFinish = (values) => {
+    const { date } = values;
+    if (date && date.length > 0) {
+      const date_from = moment.utc(date[0]).tz(moment.tz.guess(true)).format('DD-MM-YYYY');
+      setDateFrom(date_from);
+    }
+    if (date && date.length > 1) {
+      const date_to = moment.utc(date[1]).tz(moment.tz.guess(true)).format('DD-MM-YYYY');
+      setDateTo(date_to);
+    }
   };
 
   return (
@@ -63,7 +56,16 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
         <Card title="Check In / Check Out" bordered={false} style={{ width: '100%' }}>
           <Row gutter={[0, 20]}>
             <Col span={24}>
-              <Search placeholder="Search..." onSearch={onSearch} enterButton />
+              <Form form={form} name="filter" layout="inline" onFinish={onFinish}>
+                <Form.Item title="Date" name="date" rules={[{ type: 'array', required: false }]}>
+                  <RangePicker style={{ width: '100%' }} format="DD-MM-YYYY" />
+                </Form.Item>
+                <Form.Item shouldUpdate={true}>
+                  <Button type="primary" htmlType="submit">
+                    Search
+                  </Button>
+                </Form.Item>
+              </Form>
             </Col>
           </Row>
           <Row>
@@ -93,31 +95,9 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     },
                   },
                   {
-                    title: 'Shop',
-                    dataIndex: 'shop',
-                    key: 'shop',
-                    render: (data, record) => {
-                      return (
-                        <Space direction="vertical">
-                          <Text>{data.name}</Text>
-                          <Text>{record.note}</Text>
-                        </Space>
-                      );
-                    },
-                    filters:
-                      listCheckInCheckOut &&
-                      listCheckInCheckOut.length > 0 &&
-                      filters(
-                        listCheckInCheckOut.map((value) => {
-                          return {
-                            text: value.shop.name,
-                            value: value.shop.name,
-                          };
-                        }),
-                      ),
-                    onFilter: (value, record) => {
-                      return record.shop.name === value;
-                    },
+                    title: 'Note',
+                    dataIndex: 'note',
+                    key: 'note',
                   },
                   {
                     title: 'Time',
@@ -221,7 +201,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                   rowExpandable: (record) =>
                     record.shop_checkout_photos !== null && record.shop_checkout_photos.length > 0,
                 }}
-                dataSource={data || []}
+                dataSource={listCheckInCheckOut || []}
               />
             </Col>
           </Row>

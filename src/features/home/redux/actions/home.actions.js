@@ -93,11 +93,11 @@ const unlockUser = (userId) => {
   };
 };
 
-const getCheckInCheckOut = () => {
+const getCheckInCheckOut = (dateFrom, dateTo) => {
   return (dispatch) => {
     dispatch(request(GET_LIST_CHECKIN_CHECKOUT_REQUEST));
     return api()
-      .get('checkin_checkouts')
+      .get(`checkin_checkouts?date_from=${dateFrom}&date_to=${dateTo}`)
       .then((res) => {
         res.data = res.data.map((data) => {
           data.key = data.id;
@@ -113,9 +113,9 @@ const getCheckInCheckOut = () => {
       .catch((error) => {
         const { status } = error.response;
         dispatch(failure(GET_LIST_CHECKIN_CHECKOUT_FAILURE, error.response));
-        if (status === 401 || status === 500) {
-          dispatch(authActions.logout());
-        }
+        // if (status === 401 || status === 500) {
+        //   dispatch(authActions.logout());
+        // }
       });
   };
 };

@@ -20,7 +20,6 @@ const DownloadLayout = ({ dispatch, user }) => {
   const [form] = Form.useForm();
 
   const onFinish = values => {
-    console.log(values);
     const formData = {
       user_id: user.user_id,
       date_from: values.date ? values.date[0] : '',
