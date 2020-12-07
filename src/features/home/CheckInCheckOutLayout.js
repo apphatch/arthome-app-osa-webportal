@@ -95,13 +95,25 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     },
                   },
                   {
+                    title: 'Shop',
+                    dataIndex: 'shop',
+                    key: 'shop',
+                    render: (v, record) => {
+                      const shopName = record.shop !== null ? record.shop.name : "";
+                      return (
+                        <Space direction="vertical">
+                          <Text>{shopName}</Text>
+                        </Space>
+                      );
+                    },
+                  },
+                  {
                     title: 'Note',
                     dataIndex: 'note',
                     key: 'note',
                     render: (v, record) => {
                       const noteCheckIn = record.note !== "undefined" ? record.note : "";
                       const noteCheckOut = record.user_checkout != null && record.user_checkout.note !== "undefined" ? record.user_checkout.note : "";
-              
                       return (
                         <Space direction="vertical">
                           <Text>{noteCheckIn}</Text>
