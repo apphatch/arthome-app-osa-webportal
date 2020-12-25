@@ -93,6 +93,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     onFilter: (value, record) => {
                       return record.user.name === value;
                     },
+                    sorter: (a, b) => a.user.name.length - b.user.name.length,
                   },
                   {
                     title: 'Shop',

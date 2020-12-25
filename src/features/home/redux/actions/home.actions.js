@@ -111,11 +111,15 @@ const getCheckInCheckOut = (dateFrom, dateTo) => {
         console.log(res);
       })
       .catch((error) => {
+        console.log(error);
+        if (!error.response) {
+          dispatch(authActions.logout());
+        }
         const { status } = error.response;
         dispatch(failure(GET_LIST_CHECKIN_CHECKOUT_FAILURE, error.response));
-        // if (status === 401 || status === 500) {
-        //   dispatch(authActions.logout());
-        // }
+        if (status === 401 || status === 500) {
+          dispatch(authActions.logout());
+        }
       });
   };
 };
