@@ -35,7 +35,7 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
   }, [dispatch, dateFrom, dateTo]);
 
   const filters = (arr) => {
-    return _.uniqBy(arr, 'text');
+    return _.sortBy(_.uniqBy(arr, 'text'), ['text']);
   };
 
   const onFinish = (values) => {
@@ -93,14 +93,13 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     onFilter: (value, record) => {
                       return record.user.name === value;
                     },
-                    sorter: (a, b) => a.user.name.length - b.user.name.length,
                   },
                   {
                     title: 'Shop',
                     dataIndex: 'shop',
                     key: 'shop',
                     render: (v, record) => {
-                      const shopName = record.shop !== null ? record.shop.name : "";
+                      const shopName = record.shop !== null ? record.shop.name : '';
                       return (
                         <Space direction="vertical">
                           <Text>{shopName}</Text>
@@ -113,8 +112,11 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                     dataIndex: 'note',
                     key: 'note',
                     render: (v, record) => {
-                      const noteCheckIn = record.note !== "undefined" ? record.note : "";
-                      const noteCheckOut = record.user_checkout != null && record.user_checkout.note !== "undefined" ? record.user_checkout.note : "";
+                      const noteCheckIn = record.note !== 'undefined' ? record.note : '';
+                      const noteCheckOut =
+                        record.user_checkout != null && record.user_checkout.note !== 'undefined'
+                          ? record.user_checkout.note
+                          : '';
                       return (
                         <Space direction="vertical">
                           <Text>{noteCheckIn}</Text>

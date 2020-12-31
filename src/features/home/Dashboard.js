@@ -79,8 +79,8 @@ const Dashboard = ({ dispatch, home }) => {
     });
   };
 
-  const filters = (arr) => {
-    return _.uniqBy(arr, 'text');
+  const filters = (arr, sortBy) => {
+    return _.sortBy(_.uniqBy(arr, 'text'), ['text']);
   };
 
   return (
@@ -116,7 +116,6 @@ const Dashboard = ({ dispatch, home }) => {
                 onFilter: (value, record) => {
                   return record.username === value;
                 },
-                sorter: (a, b) => a.username.length - b.username.length,
               },
               {
                 title: 'Name',
@@ -136,7 +135,6 @@ const Dashboard = ({ dispatch, home }) => {
                 onFilter: (value, record) => {
                   return record.name === value;
                 },
-                sorter: (a, b) => a.name.length - b.name.length,
               },
               {
                 title: 'Importing ID',
